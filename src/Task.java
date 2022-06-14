@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Task {
     protected String taskName;
     protected String description;
@@ -14,26 +12,26 @@ public class Task {
         this.status = status;
     }
 
-
-
-    public Task(String taskName, String status, int taskId, String description){
+    public Task(String taskName, int taskId, String description){
         this.taskName = taskName;
-        this.status = status;
+        this.status = "NEW";
         this.taskId = taskId;
         this.description = description;
 
     }
 
-    public void getTaskList(){
-
+    public void changeStatus(String status){
+        this.status = status;
     }
 
-    public void removeTasks(){
-
+    @Override
+    public String toString(){
+        return "Название задачи: " + taskName+"\n"
+                +"Статус задачи: " + status+"\n"
+                +"Описание: " + description+"\n\n";
     }
 
-    public int getTask(int taskId){
-        return this.taskId;
-    }
+
+
 
 }

@@ -5,41 +5,51 @@ public class Manager {
     private static HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private static HashMap<Integer, Epic> epicsList = new HashMap<>();
     private static int newTaskId = 0;
-    protected String[] taskStatuses = {"NEW", "IN_PROGRESS", "DONE"};
 
     public void newTask(String taskName, String description){
         newTaskId++;
         tasksList.put(newTaskId, new Task(taskName, newTaskId, description));
     }
 
-    public void createSubTask(String taskName, String description){        // Метод для задач
-        newTaskId++;
-        subTasksList.put(newTaskId, new Subtask(taskName, newTaskId, description));
+    public HashMap<Integer, Task> getTasksList() {
+        return tasksList;
     }
 
-    public void createSubTask(String taskName, String description, int epicId){        // Метод для подзадач в эпике
+    public HashMap<Integer, Subtask> getSubTasksList() {
+        return subTasksList;
+    }
+
+
+    public void createSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
         newTaskId++;
         subTasksList.put(newTaskId, new Subtask(taskName, newTaskId, description, epicId));
+        epicsList.get(epicId).addSubtaskToEpic(newTaskId);
+        epicsList.get(epicId).setEpicStatus(subTasksList);
+
     }
 
     public void createEpic(String taskName, String description){
         newTaskId++;
-        epicsList.put(newTaskId, new Epic(taskName, taskStatuses[0], newTaskId, description));
+        epicsList.put(newTaskId, new Epic(taskName, newTaskId, description));
     }
 
     public void removeTask(HashMap tasks, int taskId){
         tasks.remove(taskId);
-
     }
 
-    public String getTaskStatus(int status) {
-        return taskStatuses[status];
+    public void destroySubTask(HashMap<Integer, Subtask> subtasks, int taskId, int epicId){
+        subtasks.remove(taskId);
+        getEpicsList().get(epicId).removeSubTask(taskId);
     }
 
-    public Object getTask(HashMap tasks, int newTaskId){ // Возвращает задачу по ID
-        return tasks.get(newTaskId);
+    public HashMap<Integer, Epic> getEpicsList() {
+        return epicsList;
     }
 
+
+    public Task getTask(HashMap tasks, int newTaskId){ // Возвращает задачу по ID
+        return (Task) tasks.get(newTaskId);
+    }
 
 
 

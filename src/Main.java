@@ -1,5 +1,7 @@
+import taskmanager.Manager;
+import taskmanager.TaskTypes.Task;
 public class Main {
-
+//    Ростислав, спасибо большое за ревью!
     public static void main(String[] args) {
         Manager manager = new Manager();
 
@@ -56,7 +58,6 @@ public class Main {
         System.out.println(manager.getTask(manager.getSubTasksList(), 7));
 
 
-
         System.out.println("Удаляем вторую задачу и пробуем вывести ее на печать");
         manager.removeTask(manager.getTasksList(), 2);
         System.out.println(manager.getTask(manager.getTasksList(), 2));
@@ -76,12 +77,6 @@ public class Main {
         System.out.println("\nУдаляем второй эпик и удостоверимся, что его нет");
         manager.removeTask(manager.getEpicsList(), 3);
         System.out.println(manager.getTask(manager.getEpicsList(), 3));
-
-
-
-
-
-
 
 
 

@@ -1,9 +1,9 @@
-import java.util.HashMap;
+package taskmanager.TaskTypes;
 
 public class Task {
     protected String taskName;
     protected String description;
-    protected int taskId;
+    protected final int taskId; //Присвоил final
     protected String status;
 
     public String getStatus() {
@@ -18,18 +18,14 @@ public class Task {
 
     }
 
-    public void changeStatus(String status){
-        this.status = status;
+    public void changeStatus(String status){ // Оставил этот метод, хоть он и не нужен был по ТЗ.
+        this.status = status;               // Мне кажется, что он может понадобиться
     }
 
 
     public void updateTask(String taskName, String description, String status){
         this.taskName = taskName;
         this.description = description;
-        this.status = status;
-    }
-
-    public void updateStatus(String status){
         this.status = status;
     }
 
@@ -41,8 +37,4 @@ public class Task {
                 +"Статус задачи: " + status+"\n"
                 +"Описание: " + description+"\n\n";
     }
-
-
-
-
 }

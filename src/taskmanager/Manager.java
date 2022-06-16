@@ -1,3 +1,9 @@
+package taskmanager;
+
+import taskmanager.TaskTypes.Epic;
+import taskmanager.TaskTypes.Subtask;
+import taskmanager.TaskTypes.Task;
+
 import java.util.HashMap;
 
 public class Manager {

@@ -1,6 +1,8 @@
-class Subtask extends Task{
+package taskmanager.TaskTypes;
 
-    protected int epicId;
+public class Subtask extends Task {
+
+    protected final int epicId;
 
     public Subtask(String taskName, int taskId, String description, int epicId) {
         super(taskName, taskId, description);

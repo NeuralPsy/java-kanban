@@ -1,7 +1,9 @@
+package taskmanager.TaskTypes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class Epic extends Task{
+public class Epic extends Task {
 
     protected ArrayList<Integer> subTasksInEpic = new ArrayList<>();
 
@@ -19,8 +21,6 @@ class Epic extends Task{
     }
 
     public void setEpicStatus(HashMap<Integer, Subtask> subtask){ // Проверяет статус эпика.
-        // Не знаю, почему, но метод заработал правильно только после указания в параместрах HashMap<Integer, Subtask>
-        // вместо одного только HashMap
         ArrayList<String> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {

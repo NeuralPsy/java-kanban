@@ -1,83 +1,108 @@
-import taskmanager.InMemoryTaskManager;
-import taskmanager.TaskTypes.Task;
+import taskmanager.History.InMemoryTaskManager;
+
 public class Main {
-//    Ростислав, спасибо большое за ревью!
+
+//    Программа успешно прошла тестирование. Все задачи, эпики и подзадачи в них просматриваются в истории,
+//    а так же соблюдается условие ограничения объема памяти истории десятью задачами. Полее поздняя задача удаляется
+//    из истории при добавлении новой.
+
     public static void main(String[] args) {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         String taskName1 = "Задача №1";
-        String task1Description = "Здесь может быть описание задачи, но для этого нужно что-то придумать";
+        String task1Description = "Описание задачи №1";
 
         String taskName2 = "Задача №2";
-        String task2Description = "Пока еще никто ничего не придумал";
+        String task2Description = "Описание задачи №2";
+
+        String taskName3 = "Задача №3";
+        String task3Description = "Описание задачи №3";
+
+        String taskName4 = "Задача №4";
+        String task4Description = "Описание задачи №4";
+
+        String taskName5 = "Задача №5";
+        String task5Description = "Описание задачи №5";
+
+        String epic6 = "Эпик №1";
+        String epic6Description = "Описание эпика №1";
+
+        String epic7 = "Эпик №2";
+        String epic7Description = "Описание эпика №2";
+
+        String epic8 = "Эпик №3";
+        String epic8Description = "Описание эпика №3";
+
+        String epic9 = "Эпик №4";
+        String epic9Description = "Описание эпика №4";
+
+        String epic10 = "Эпик №5";
+        String epic10Description = "Описание эпика №5";
+
+        String epic11 = "Эпик №6";
+        String epic11Description = "Описание эпика №6";
+
+        String subTask12 = "Первая подзадача эпика №4";
+        String subTask12Description = "Описание первой подзадачи эпика №4";
+
+        String subTask13 = "Вторая подзадача эпика №4";
+        String subTask13Description = "Описание второй подзадачи эпика №4";
 
         inMemoryTaskManager.newTask(taskName1, task1Description);
-        Task test1 = inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 1);
-
-
         inMemoryTaskManager.newTask(taskName2, task2Description);
-        Task test2 = inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 2);
+        inMemoryTaskManager.newTask(taskName3, task3Description);
+        inMemoryTaskManager.newTask(taskName4, task4Description);
+        inMemoryTaskManager.newTask(taskName5, task5Description);
+        inMemoryTaskManager.newEpic(epic6, epic6Description);
+        inMemoryTaskManager.newEpic(epic7, epic7Description);
+        inMemoryTaskManager.newEpic(epic8, epic8Description);
+        inMemoryTaskManager.newEpic(epic9, epic9Description);
+        inMemoryTaskManager.newEpic(epic10, epic10Description);
+        inMemoryTaskManager.newEpic(epic11, epic11Description);
+        inMemoryTaskManager.newSubTask(subTask12, subTask12Description, 11);
+        inMemoryTaskManager.newSubTask(subTask13, subTask13Description, 11);
 
 
-        System.out.println("Список задач до удаления: \n");
-        System.out.println(inMemoryTaskManager.getTasksList());
+        System.out.println("\nТестируем вывод истории просмотренных задач");
+        System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
+        System.out.println(InMemoryTaskManager.getHistory());
+        System.out.println("**********************************************");
 
-        System.out.println("Список эпиков до удаления из них задач: \n");
-
-        String epicName1 = "Эпик №1";
-        String epic1Description = "Здесь может быть описание эпика, но для этого нужно что-то придумать";
-        inMemoryTaskManager.createEpic(epicName1, epic1Description);
-
-        String epic1SubTask1 = "Подзадача №1 в первом эпике";
-        String epic1SubTask1Description = "Здесь может быть описание подзадачи первого эпика, " +
-                "но для этого нужно что-то придумать";
-        String epic1SubTask2 = "Подзадача №2 во первом эпике";
-        String epic1SubTask2Description = "Здесь может быть описание подзадачи первого эпика, " +
-                "но для этого нужно что-то придумать";
-
-        inMemoryTaskManager.createSubTask(epic1SubTask1, epic1SubTask1Description, 3);
-        inMemoryTaskManager.createSubTask(epic1SubTask2, epic1SubTask2Description, 3);
-
-
-        String epicName2 = "Эпик №2";
-        String epic2Description = "Здесь может быть описание еще одного эпика, но для этого нужно что-то придумать";
-
-        inMemoryTaskManager.createEpic(epicName2, epic2Description);
-
-        String epic2SubTask = "Подзадача №1 во втором эпике";
-        String epic2SubTaskDescription = "Здесь может быть описание подзадачи второго эпика, " +
-                "но для этого тоже нужно что-то придумать";
-
-        inMemoryTaskManager.createSubTask(epic2SubTask, epic2SubTaskDescription, 6);
-
-
-//      Печатаем список подзадач в двух эпиках
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 3));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 4));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 5));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 7));
-
-
-        System.out.println("Удаляем вторую задачу и пробуем вывести ее на печать");
-        inMemoryTaskManager.removeTask(inMemoryTaskManager.getTasksList(), 2);
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 1));
         System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 2));
 
-        System.out.println("Изменяем первую подзадачу из первого эпика и пробуем вывести ее на печать\n");
-        inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 4).updateTask("НОВОЕ_НАЗВАНИЕ",
-                "Здесь тоже могло быть что-то новое", "IN_PROGRESS");
+        System.out.println("\nТестируем вывод истории просмотренных задач");
+        System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
+        System.out.println(InMemoryTaskManager.getHistory());
+        System.out.println("**********************************************");
 
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 3));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 4));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 5));
 
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 4));
+        System.out.println("\nТестируем вывод истории просмотренных задач");
+        System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
+        System.out.println(InMemoryTaskManager.getHistory());
+        System.out.println("**********************************************");
 
-        inMemoryTaskManager.getEpicsList().get(3).setEpicStatus(inMemoryTaskManager.getSubTasksList());
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 6));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 7));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 8));
 
-        System.out.println("Првоеряем новый статус эпика");
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 3).getStatus());
+        System.out.println("\nТестируем вывод истории просмотренных задач");
+        System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
+        System.out.println(InMemoryTaskManager.getHistory());
+        System.out.println("**********************************************");
 
-        System.out.println("\nУдаляем второй эпик и удостоверимся, что его нет");
-        inMemoryTaskManager.removeTask(inMemoryTaskManager.getEpicsList(), 3);
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 3));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 9));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 10));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 11));
+        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 12));
 
+        System.out.println("\nТестируем вывод истории просмотренных задач");
+        System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
+        System.out.println(InMemoryTaskManager.getHistory());
+        System.out.println("**********************************************");
 
 
     }

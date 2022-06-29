@@ -1,4 +1,4 @@
-package taskmanager;
+package taskmanager.Manager;
 
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
@@ -14,9 +14,9 @@ public interface TaskManager {
 
     public HashMap<Integer, Subtask> getSubTasksList();
 
-    void createSubTask(String taskName, String description, int epicId);
+    void newSubTask(String taskName, String description, int epicId);
 
-    void createEpic(String taskName, String description);
+    void newEpic(String taskName, String description);
 
     void removeTask(HashMap tasks, int taskId);
 
@@ -24,6 +24,5 @@ public interface TaskManager {
 
     public HashMap<Integer, Epic> getEpicsList();
 
-
-    Task getTask(HashMap tasks, int newTaskId);
+    public Task getTask(HashMap tasks, int newTaskId);
 }

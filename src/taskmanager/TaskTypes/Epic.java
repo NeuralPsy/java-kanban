@@ -1,5 +1,7 @@
 package taskmanager.TaskTypes;
 
+import taskmanager.Manager.TaskStatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,18 +23,18 @@ public class Epic extends Task {
     }
 
     public void setEpicStatus(HashMap<Integer, Subtask> subtask){ // Проверяет статус эпика.
-        ArrayList<String> statuses = new ArrayList<>();
+        ArrayList<TaskStatus> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {
             statuses.add(subtask.get(taskId).getStatus());
         }
 
-        boolean isDone = !statuses.contains("NEW") && !statuses.contains("IN_PROGRESS");
-        boolean isInProgress = statuses.contains("IN_PROGRESS")
-                || (statuses.contains("DONE") && statuses.contains("NEW"));
+        boolean isDone = !statuses.contains(TaskStatus.NEW) && !statuses.contains(TaskStatus.IN_PROGRESS);
+        boolean isInProgress = statuses.contains(TaskStatus.IN_PROGRESS)
+                || (statuses.contains(TaskStatus.DONE) && statuses.contains(TaskStatus.NEW));
 
-        if (isDone) this.status = "DONE";
-        if (isInProgress) this.status = "IN_PROGRESS";
+        if (isDone) this.status = TaskStatus.DONE;
+        if (isInProgress) this.status = TaskStatus.IN_PROGRESS;
 
     }
 

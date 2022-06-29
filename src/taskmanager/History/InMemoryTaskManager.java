@@ -1,5 +1,6 @@
-package taskmanager;
+package taskmanager.History;
 
+import taskmanager.Manager.TaskManager;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
@@ -10,6 +11,7 @@ public class InMemoryTaskManager implements TaskManager {
     private static HashMap<Integer, Task> tasksList = new HashMap<>();
     private static HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private static HashMap<Integer, Epic> epicsList = new HashMap<>();
+    private static InMemoryHistoryManager history = new InMemoryHistoryManager();
     private static int newTaskId = 0;
 
     @Override
@@ -29,7 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
+    public void newSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
         newTaskId++;
         subTasksList.put(newTaskId, new Subtask(taskName, newTaskId, description, epicId));
         epicsList.get(epicId).addSubtaskToEpic(newTaskId);
@@ -38,9 +40,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createEpic(String taskName, String description){
+    public void newEpic(String epicName, String epicDescription){
         newTaskId++;
-        epicsList.put(newTaskId, new Epic(taskName, newTaskId, description));
+        epicsList.put(newTaskId, new Epic(epicName, newTaskId, epicDescription));
     }
 
     @Override
@@ -61,9 +63,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(HashMap tasks, int newTaskId){ // Возвращает задачу по ID
+        history.add((Task) tasks.get(newTaskId));
         return (Task) tasks.get(newTaskId);
     }
 
+    public static InMemoryHistoryManager getHistory(){
+        for (Task task : history.getHistory()){
+            System.out.println(task);
+        }
+        return history;
+    }
 
 
 }

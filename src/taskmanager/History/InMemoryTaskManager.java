@@ -15,23 +15,25 @@ public class InMemoryTaskManager implements TaskManager {
     private static int newTaskId = 0;
 
     @Override
-    public void newTask(String taskName, String description){
+    public void addTask(String taskName, String description){
         newTaskId++;
         tasksList.put(newTaskId, new Task(taskName, newTaskId, description));
     }
 
     @Override
     public HashMap<Integer, Task> getTasksList() {
-        return tasksList;
+        return new HashMap<>(this.tasksList);
     }
 
     @Override
+//    Внес исправления в соответствие с рекомендацией. Теперь возвращается копия, а не сам список.
     public HashMap<Integer, Subtask> getSubTasksList() {
-        return subTasksList;
+
+        return new HashMap<>(this.subTasksList);
     }
 
     @Override
-    public void newSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
+    public void addSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
         newTaskId++;
         subTasksList.put(newTaskId, new Subtask(taskName, newTaskId, description, epicId));
         epicsList.get(epicId).addSubtaskToEpic(newTaskId);
@@ -40,7 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void newEpic(String epicName, String epicDescription){
+    public void addEpic(String epicName, String epicDescription){
         newTaskId++;
         epicsList.put(newTaskId, new Epic(epicName, newTaskId, epicDescription));
     }
@@ -58,7 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public HashMap<Integer, Epic> getEpicsList() {
-        return epicsList;
+        return new HashMap<>(this.epicsList);
     }
 
     @Override
@@ -68,9 +70,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public static InMemoryHistoryManager getHistory(){
-        for (Task task : history.getHistory()){
-            System.out.println(task);
-        }
         return history;
     }
 

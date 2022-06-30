@@ -8,15 +8,15 @@ import java.util.HashMap;
 
 public interface TaskManager {
 
-    void newTask(String taskName, String description);
+    void addTask(String taskName, String description);
 
     public HashMap<Integer, Task> getTasksList();
 
     public HashMap<Integer, Subtask> getSubTasksList();
 
-    void newSubTask(String taskName, String description, int epicId);
+    void addSubTask(String taskName, String description, int epicId);
 
-    void newEpic(String taskName, String description);
+    void addEpic(String taskName, String description);
 
     void removeTask(HashMap tasks, int taskId);
 

@@ -3,10 +3,11 @@ package taskmanager.History;
 import taskmanager.TaskTypes.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    private ArrayList<Task> history = new ArrayList<>();
+    private List<Task> history = new ArrayList<>();
 
     @Override
     public void add(Task task) {
@@ -19,7 +20,7 @@ public class InMemoryHistoryManager implements HistoryManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return history;
     }
 

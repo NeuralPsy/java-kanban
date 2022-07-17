@@ -26,7 +26,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-//    Внес исправления в соответствие с рекомендацией. Теперь возвращается копия, а не сам список.
     public HashMap<Integer, Subtask> getSubTasksList() {
 
         return new HashMap<>(this.subTasksList);

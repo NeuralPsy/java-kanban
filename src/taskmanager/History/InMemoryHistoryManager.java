@@ -2,26 +2,51 @@ package taskmanager.History;
 
 import taskmanager.TaskTypes.Task;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    private List<Task> history = new ArrayList<>();
+
+    Map<Integer, Task> history = new LinkedHashMap<>();
+
+    // Если честно, подсказки в ТЗ меня запутали совсем.
+    // Можно ведь просто применить LinkedHashMap
 
     @Override
     public void add(Task task) {
-        if (history.size() < 10 ) history.add(task);
-        else {
-            history.remove(0);
-            history.add(task);
+        ArrayList<Integer> tasks = new ArrayList<>(history.keySet());
+        if (history.size() < 10 ) {
+            if (history.containsKey(task.getTaskId())) {
+                remove(task);
+                history.put(task.getTaskId(), task);
+            } else {
+                history.put(task.getTaskId(), task);
+            }
+        } else {
+            if (history.containsKey(task.getTaskId())) {
+                remove(task);
+                history.put(task.getTaskId(), task);
+            } else {
+                history.remove(tasks.get(0));
+                history.put(task.getTaskId(), task);
+            }
+
     }
 
+    }
+
+    public void remove(Task task){
+        history.remove(task.getTaskId());
     }
 
     @Override
-    public List<Task> getHistory() {
-        return history;
+    public LinkedHashMap<Integer, Task> getHistory() {
+        return new LinkedHashMap<>(this.history);
     }
+
+    public ArrayList<Integer> getTasks(){
+        return new ArrayList<>(history.keySet());
+    }
+
 
 }

@@ -2,13 +2,13 @@ package taskmanager.History;
 
 import taskmanager.TaskTypes.Task;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 
 public interface HistoryManager {
 
     public void add(Task task);
 
-    public List<Task> getHistory();
+    public LinkedHashMap<Integer, Task> getHistory();
 
-    void remove(int id);
+    void remove(Task task);
 }

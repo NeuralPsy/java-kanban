@@ -5,7 +5,12 @@ import taskmanager.Manager.TaskStatus;
 public class Task {
     protected String taskName;
     protected String description;
-    protected final int taskId; //Присвоил final
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    protected final int taskId;
     protected TaskStatus status;
 
     public TaskStatus getStatus() {

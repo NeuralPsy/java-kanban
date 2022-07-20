@@ -7,15 +7,15 @@ import java.util.*;
 public class InMemoryHistoryManager implements HistoryManager{
 
 
-    Map<Integer, Task> history = new LinkedHashMap<>();
+    private Map<Integer, Task> history = new LinkedHashMap<>();
 
     // Если честно, подсказки в ТЗ меня запутали совсем.
     // Можно ведь просто применить LinkedHashMap
 
     @Override
     public void add(Task task) {
-        ArrayList<Integer> tasks = new ArrayList<>(history.keySet());
-        if (history.size() < 10 ) {
+        ArrayList<Integer> tasks = new ArrayList<>(history.keySet()); // для того, чтобы можно было обратиться
+        if (history.size() < 10 ) {                                   // по индексу к истории
             if (history.containsKey(task.getTaskId())) {
                 remove(task);
                 history.put(task.getTaskId(), task);
@@ -47,6 +47,8 @@ public class InMemoryHistoryManager implements HistoryManager{
     public ArrayList<Integer> getTasks(){
         return new ArrayList<>(history.keySet());
     }
+
+
 
 
 }

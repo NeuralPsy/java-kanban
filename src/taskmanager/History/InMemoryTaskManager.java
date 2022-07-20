@@ -68,8 +68,9 @@ public class InMemoryTaskManager implements TaskManager {
         return (Task) tasks.get(newTaskId);
     }
 
-    public static InMemoryHistoryManager getHistory(){
-        return history;
+    public static String getHistory(){
+        String text = "" + history.getTasks();
+        return text;
     }
 
 

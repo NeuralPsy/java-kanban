@@ -17,10 +17,11 @@ public class InMemoryTaskManager implements TaskManager {
     private static int newTaskId = 0;
 
     @Override
-    public void addTask(String taskName, String description){
+    public int addTask(String taskName, String description){
         newTaskId++;
         Task newTask = new Task(taskName, newTaskId, description);
         tasksList.put(newTaskId, newTask);
+        return newTaskId;
     }
 
     @Override
@@ -34,25 +35,26 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
+    public int addSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
         newTaskId++;
         Subtask newSubTask = new Subtask(taskName, newTaskId, description, epicId);
         subTasksList.put(newTaskId, newSubTask);
         epicsList.get(epicId).addSubtaskToEpic(newTaskId);
         epicsList.get(epicId).setEpicStatus(subTasksList);
+        return newTaskId;
 
     }
 
     @Override
-    public void addEpic(String epicName, String epicDescription){
+    public int addEpic(String epicName, String epicDescription){
         newTaskId++;
         Epic newEpic = new Epic(epicName, newTaskId, epicDescription);
         epicsList.put(newTaskId, newEpic);
+        return newTaskId;
     }
 
     @Override
     public void removeTask(int taskId){
-
         if (tasksList.containsKey(taskId)) {
             history.remove(tasksList.get(newTaskId));
             tasksList.remove(newTaskId);

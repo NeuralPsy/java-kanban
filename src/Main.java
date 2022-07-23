@@ -1,5 +1,7 @@
 import taskmanager.Manager.InMemoryTaskManager;
 
+import java.util.LinkedHashMap;
+
 import static taskmanager.Manager.InMemoryTaskManager.*;
 
 public class Main {
@@ -31,14 +33,15 @@ public class Main {
         String subTask13 = "Вторая подзадача эпика №1";
         String subTask13Description = "Описание второй подзадачи эпика №4";
 
-        inMemoryTaskManager.addTask(taskName1, task1Description);
-        inMemoryTaskManager.addTask(taskName2, task2Description);
-        inMemoryTaskManager.addEpic(epic1, epic1Description);
-        inMemoryTaskManager.addEpic(epic2, epic2Description);
-        inMemoryTaskManager.addSubTask(subTask11, subTask11Description, 3);
-        inMemoryTaskManager.addSubTask(subTask12, subTask12Description, 3);
-        inMemoryTaskManager.addSubTask(subTask13, subTask13Description, 3);
+        System.out.println("Создаем задачи, эпики и подзадачи: ");
 
+        System.out.println(inMemoryTaskManager.addTask(taskName1, task1Description));
+        System.out.println(inMemoryTaskManager.addTask(taskName2, task2Description));
+        System.out.println(inMemoryTaskManager.addEpic(epic1, epic1Description));
+        System.out.println(inMemoryTaskManager.addEpic(epic2, epic2Description));
+        System.out.println(inMemoryTaskManager.addSubTask(subTask11, subTask11Description, 3));
+        System.out.println(inMemoryTaskManager.addSubTask(subTask12, subTask12Description, 3));
+        System.out.println(inMemoryTaskManager.addSubTask(subTask13, subTask13Description, 3));
 
         System.out.println("\nТестируем вывод истории просмотренных задач");
 

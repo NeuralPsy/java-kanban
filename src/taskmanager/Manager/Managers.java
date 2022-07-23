@@ -1,15 +1,13 @@
 package taskmanager.Manager;
 
-import taskmanager.History.InMemoryHistoryManager;
-
 public class Managers <T extends TaskManager> {
 
-    public TaskManager getDefault(TaskManager taskManager){
+    public static TaskManager getDefault(TaskManager taskManager){
         return taskManager;
         }
 
-    public InMemoryHistoryManager getDefaultHistory(InMemoryHistoryManager history){
-        return history;
+    public InMemoryHistoryManager getDefaultHistory(){
+        return new InMemoryHistoryManager();
     }
 }
 

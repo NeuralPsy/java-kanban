@@ -1,28 +1,27 @@
 package taskmanager.Manager;
 
-import taskmanager.TaskTypes.Epic;
-import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface TaskManager {
 
     void addTask(String taskName, String description);
 
-    public HashMap<Integer, Task> getTasksList();
+    public ArrayList<Integer> getTasksList();
 
-    public HashMap<Integer, Subtask> getSubTasksList();
+    public ArrayList<Integer> getSubTasksList();
 
     void addSubTask(String taskName, String description, int epicId);
 
     void addEpic(String taskName, String description);
 
-    void removeTask(HashMap tasks, int taskId);
+    void removeTask(int taskId);
 
-    void destroySubTask(HashMap<Integer, Subtask> subtasks, int taskId, int epicId);
+    void removeSubTask(int subTaskId);
 
-    public HashMap<Integer, Epic> getEpicsList();
+    public ArrayList<Integer> getEpicsList();
 
-    public Task getTask(HashMap tasks, int newTaskId);
+    public Task getTask(int newTaskId);
 }

@@ -1,7 +1,5 @@
 package taskmanager.TaskTypes;
 
-import taskmanager.Manager.TaskStatus;
-
 public class Task {
     protected String taskName;
     protected String description;

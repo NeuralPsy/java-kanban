@@ -1,11 +1,10 @@
 package taskmanager.TaskTypes;
 
-import taskmanager.Manager.TaskStatus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Epic extends Task {
+
 
     protected ArrayList<Integer> subTasksInEpic = new ArrayList<>();
 
@@ -13,10 +12,19 @@ public class Epic extends Task {
     public Epic(String taskName, int epicId, String description) {
         super(taskName, epicId, description);
     }
+    public ArrayList<Integer> getSubTasksInEpic() {
+        return subTasksInEpic;
+    }
+
+    public void setSubTasksInEpic(ArrayList<Integer> subTasksInEpic) {
+        this.subTasksInEpic = subTasksInEpic;
+    }
 
     public void addSubtaskToEpic(int subtaskId){
         subTasksInEpic.add(subtaskId);
     }
+
+
 
     public void removeSubTask(int subtaskId){
         subTasksList.remove(subtaskId);

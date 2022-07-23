@@ -1,4 +1,6 @@
-import taskmanager.History.InMemoryTaskManager;
+import taskmanager.Manager.InMemoryTaskManager;
+
+import static taskmanager.Manager.InMemoryTaskManager.*;
 
 public class Main {
 
@@ -40,28 +42,28 @@ public class Main {
 
         System.out.println("\nТестируем вывод истории просмотренных задач");
 
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 1));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 2));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 3));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 4));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 5));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 6));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 7));
+        System.out.println(inMemoryTaskManager.getTask(1));
+        System.out.println(inMemoryTaskManager.getTask(2));
+        System.out.println(inMemoryTaskManager.getTask(3));
+        System.out.println(inMemoryTaskManager.getTask( 4));
+        System.out.println(inMemoryTaskManager.getTask(5));
+        System.out.println(inMemoryTaskManager.getTask(6));
+        System.out.println(inMemoryTaskManager.getTask(7));
 
         System.out.println("\nТестируем вывод истории просмотренных задач");
         System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
         System.out.println(InMemoryTaskManager.getHistory());
         System.out.println("**********************************************");
 
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 2));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 3));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 1));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 4));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 6));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 5));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getSubTasksList(), 7));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getTasksList(), 1));
-        System.out.println(inMemoryTaskManager.getTask(inMemoryTaskManager.getEpicsList(), 4));
+        System.out.println(inMemoryTaskManager.getTask(2));
+        System.out.println(inMemoryTaskManager.getTask(3));
+        System.out.println(inMemoryTaskManager.getTask(1));
+        System.out.println(inMemoryTaskManager.getTask(4));
+        System.out.println(inMemoryTaskManager.getTask(6));
+        System.out.println(inMemoryTaskManager.getTask(5));
+        System.out.println(inMemoryTaskManager.getTask(7));
+        System.out.println(inMemoryTaskManager.getTask( 1));
+        System.out.println(inMemoryTaskManager.getTask(4));
 
         System.out.println("\nТестируем вывод истории просмотренных задач");
         System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");

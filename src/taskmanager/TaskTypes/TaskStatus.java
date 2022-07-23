@@ -1,4 +1,4 @@
-package taskmanager.Manager;
+package taskmanager.TaskTypes;
 
 public enum TaskStatus {
     NEW,

@@ -100,15 +100,13 @@ public class InMemoryTaskManager implements TaskManager {
             history.add(tasksList.get(newTaskId));
             taskToReturn = tasksList.get(newTaskId);
         }
-
         if (subTasksList.containsKey(newTaskId)){
             history.add(subTasksList.get(newTaskId));
             taskToReturn = subTasksList.get(newTaskId);
         }
-
         if (epicsList.containsKey(newTaskId)){
             history.add((epicsList.get(newTaskId)));
-            taskToReturn = subTasksList.get(newTaskId);
+            taskToReturn = epicsList.get(newTaskId);
         } return taskToReturn;
     }
 

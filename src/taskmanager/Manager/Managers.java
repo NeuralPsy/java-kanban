@@ -2,8 +2,8 @@ package taskmanager.Manager;
 
 public class Managers <T extends TaskManager> {
 
-    public static TaskManager getDefault(TaskManager taskManager){
-        return taskManager;
+    public static TaskManager getDefault(){
+        return new InMemoryTaskManager();
         }
 
     public InMemoryHistoryManager getDefaultHistory(){

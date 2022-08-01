@@ -3,7 +3,7 @@ package taskmanager.Manager;
 public class Managers <T extends TaskManager> {
 
     public static TaskManager getDefault(){
-        return new InMemoryTaskManager();
+        return new InMemoryTasksManager();
         }
 
     public InMemoryHistoryManager getDefaultHistory(){

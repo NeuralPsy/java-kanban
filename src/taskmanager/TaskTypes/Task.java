@@ -1,15 +1,26 @@
 package taskmanager.TaskTypes;
 
 public class Task {
+
+
     protected String taskName;
     protected String description;
+    protected final int taskId;
+    protected TaskStatus status;
+
+    public String getDescription() {
+        return description;
+    }
 
     public int getTaskId() {
         return taskId;
     }
 
-    protected final int taskId;
-    protected TaskStatus status;
+    public String getTaskName() {
+        return taskName;
+    }
+
+
 
     public TaskStatus getStatus() {
         return this.status;

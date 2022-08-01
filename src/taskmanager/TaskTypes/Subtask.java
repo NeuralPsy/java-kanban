@@ -17,4 +17,8 @@ public class Subtask extends Task {
                 +"Статус подзадачи: " + status+"\n"
                 +"Описание: " + description+"\n\n";
     }
+
+    public int getEpicId() {
+        return epicId;
+    }
 }

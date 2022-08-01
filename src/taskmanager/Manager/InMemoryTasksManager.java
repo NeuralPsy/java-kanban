@@ -7,7 +7,7 @@ import taskmanager.TaskTypes.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Task> tasksList = new HashMap<>(); // здесь убрал static
     private HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private HashMap<Integer, Epic> epicsList = new HashMap<>();

@@ -26,6 +26,10 @@ public class Task {
         return this.status;
     }
 
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
     public Task(String taskName, int taskId, String description){
         this.taskName = taskName;
         this.status = TaskStatus.NEW;

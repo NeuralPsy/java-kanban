@@ -1,9 +1,6 @@
 package taskmanager.Manager;
 
-import taskmanager.TaskTypes.Epic;
-import taskmanager.TaskTypes.Subtask;
-import taskmanager.TaskTypes.Task;
-import taskmanager.TaskTypes.TaskTypes;
+import taskmanager.TaskTypes.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -57,6 +54,16 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         backedTasks.close();
 
         return epicString;
+    }
+
+    public Task fromString(String stringTask){
+        String[] taskArray = stringTask.split(",");
+        if (taskArray[1].equals("TASK")){
+            Task task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
+            task.setStatus(TaskStatus.valueOf(taskArray[1]));
+            return task;
+        }
+
     }
 
 

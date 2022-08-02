@@ -58,10 +58,22 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     public Task fromString(String stringTask){
         String[] taskArray = stringTask.split(",");
+
         if (taskArray[1].equals("TASK")){
             Task task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
             task.setStatus(TaskStatus.valueOf(taskArray[1]));
             return task;
+        }
+        if (taskArray[1].equals("EPIC")){
+            Epic epic = new Epic(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
+            epic.setStatus(TaskStatus.valueOf(taskArray[1]));
+            return epic;
+        }
+        if (taskArray[1].equals("SUBTASK")){
+            Subtask subtask = new Subtask(taskArray[2], Integer.parseInt(taskArray[0]),
+                    taskArray[4], Integer.parseInt(taskArray[5]));
+            subtask.setStatus(TaskStatus.valueOf(taskArray[1]));
+            return subtask;
         }
 
     }

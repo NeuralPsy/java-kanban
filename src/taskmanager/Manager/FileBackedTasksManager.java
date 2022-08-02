@@ -3,33 +3,39 @@ package taskmanager.Manager;
 import taskmanager.TaskTypes.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class FileBackedTasksManager extends InMemoryTasksManager {
 
-    private static int newTaskId = 0;
+    // При сохранении методом save(), значения из всех хешмапов должны сохраняться в файл
+    // При открытии менеджера данные из файла сохранения должны загружаться в соответствующие хешмапы
+
+    private Writer backedTasks;
+
+    public FileBackedTasksManager(String autoSaveFile) throws IOException {
+        try {
+            this.backedTasks = new FileWriter(autoSaveFile, true);
+        } catch (IOException exception){
+            System.out.println("ERROR occurred: " + exception.getMessage());
+        }
+    }
 
 
     public String toString(Task task) throws IOException {
         String taskType = String.valueOf(task.getClass()).toUpperCase();
-        Writer backedTasks = new FileWriter("FileBackedTasksManager.csv", true);
 
-            String taskString = task.getTaskId()+","
-                    +TaskTypes.valueOf(taskType)+","
-                    +task.getTaskName()+","+
-                    task.getStatus()+","
-                    +task.getDescription()+",";
+        String taskString = task.getTaskId()+","+
+                    TaskTypes.valueOf(taskType)+","+
+                    task.getTaskName()+","+
+                    task.getStatus()+","+
+                    task.getDescription()+",";
 
             if (taskType.equals("SUBTASK")){
                 taskString += ((Subtask) task).getEpicId();
             }
 
             backedTasks.write(taskString+"\n");
-            backedTasks.close();
 
             return taskString;
-
 
     }
 

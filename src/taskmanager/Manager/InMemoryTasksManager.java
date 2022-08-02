@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTasksManager implements TaskManager {
-    private HashMap<Integer, Task> tasksList = new HashMap<>(); // здесь убрал static
+    private HashMap<Integer, Task> tasksList = new HashMap<>();
     private HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
-    private static InMemoryHistoryManager history = new InMemoryHistoryManager(); //но если уберу здесь,
-    // то вылетает ошибка "non-static method getHistory() cannot be referenced from a static context", если уберу static
-    // в методе getHistory класса InMemoryHistoryManager
+    private static InMemoryHistoryManager history = new InMemoryHistoryManager();
+
     private static int newTaskId = 0;
 
     @Override
@@ -35,7 +34,7 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     @Override
-    public int addSubTask(String taskName, String description, int epicId){  // Метод для создания подзадач в эпике
+    public int addSubTask(String taskName, String description, int epicId){
         newTaskId++;
         Subtask newSubTask = new Subtask(taskName, newTaskId, description, epicId);
         subTasksList.put(newTaskId, newSubTask);

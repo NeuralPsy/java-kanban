@@ -12,49 +12,27 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
 
     public String toString(Task task) throws IOException {
-        Writer backedTasks = new FileWriter("FileBackedTasksManager.csv", true);
-        String taskString = task.getTaskId()+","
-                +TaskTypes.TASK+","
-                +task.getTaskName()+","+
-                task.getStatus()+","
-                +task.getDescription()+",";
-
-        backedTasks.write(taskString+"\n");
-        backedTasks.close();
-
-        return taskString;
-    }
-
-    public String toString(Subtask subtask) throws IOException {
+        String taskType = String.valueOf(task.getClass()).toUpperCase();
         Writer backedTasks = new FileWriter("FileBackedTasksManager.csv", true);
 
-        String subtaskString = subtask.getTaskId()+","
-                +TaskTypes.SUBTASK+","
-                +subtask.getTaskName()+","+
-                subtask.getStatus()+","
-                +subtask.getDescription()+","+
-                subtask.getEpicId();
+            String taskString = task.getTaskId()+","
+                    +TaskTypes.valueOf(taskType)+","
+                    +task.getTaskName()+","+
+                    task.getStatus()+","
+                    +task.getDescription()+",";
 
-        backedTasks.write(subtaskString+"\n");
-        backedTasks.close();
+            if (taskType.equals("SUBTASK")){
+                taskString += ((Subtask) task).getEpicId();
+            }
 
-        return subtaskString;
+            backedTasks.write(taskString+"\n");
+            backedTasks.close();
+
+            return taskString;
+
+
     }
 
-    public String toString(Epic epic) throws IOException {
-        Writer backedTasks = new FileWriter("FileBackedTasksManager.csv", true);
-
-        String epicString = epic.getTaskId()+","
-                +TaskTypes.EPIC+","
-                +epic.getTaskName()+","+
-                epic.getStatus()+","
-                +epic.getDescription()+",";
-
-        backedTasks.write(epicString+"\n");
-        backedTasks.close();
-
-        return epicString;
-    }
 
     public Task fromString(String stringTask){
         String[] taskArray = stringTask.split(",");

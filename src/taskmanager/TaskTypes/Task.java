@@ -8,6 +8,8 @@ public class Task {
     protected final int taskId;
     protected TaskStatus status;
 
+    private final String epicId = "";
+
     public String getDescription() {
         return description;
     }
@@ -28,6 +30,10 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public String getEpicId() {
+        return epicId;
     }
 
     public Task(String taskName, int taskId, String description){

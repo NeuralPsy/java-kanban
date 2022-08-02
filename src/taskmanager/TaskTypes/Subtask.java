@@ -10,6 +10,7 @@ public class Subtask extends Task {
         this.status = TaskStatus.NEW;
     }
 
+
     @Override
     public String toString(){
         return "Название подзадачи: " + taskName+"\n"
@@ -19,6 +20,6 @@ public class Subtask extends Task {
     }
 
     public int getEpicId() {
-        return epicId;
+        return this.epicId;
     }
 }

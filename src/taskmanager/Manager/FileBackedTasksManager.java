@@ -3,6 +3,8 @@ package taskmanager.Manager;
 import taskmanager.TaskTypes.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTasksManager {
 
@@ -67,6 +69,12 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         history.deleteCharAt(-1);
 
         return history.toString();
+    }
+
+    static List<Integer> historyFromString(String string){
+        List<Integer> history = new ArrayList<>();
+        for (String x : string.split(",")) history.add(Integer.parseInt(x));
+        return history;
     }
 
 

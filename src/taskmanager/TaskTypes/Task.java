@@ -7,6 +7,12 @@ public class Task {
     protected String description;
     protected final int taskId;
     protected TaskStatus status;
+    protected TaskTypes type = TaskTypes.TASK;
+
+    public TaskTypes getType() {
+        return type;
+    }
+
 
 
     public String getDescription() {
@@ -23,12 +29,12 @@ public class Task {
 
 
 
-    public TaskStatus getStatus() {
-        return this.status;
+    public String getStatus() {
+        return status.name();
     }
 
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public void setStatus(String string) {
+        this.status = TaskStatus.valueOf(string);
     }
 
 

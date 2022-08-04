@@ -8,6 +8,7 @@ public class Subtask extends Task {
         super(taskName, taskId, description);
         this.epicId = epicId;
         this.status = TaskStatus.NEW;
+        this.type = TaskTypes.SUBTASK;
     }
 
 

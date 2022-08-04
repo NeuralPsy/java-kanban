@@ -11,6 +11,7 @@ public class Epic extends Task {
     private static HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     public Epic(String taskName, int epicId, String description) {
         super(taskName, epicId, description);
+        this.type = TaskTypes.EPIC;
     }
     public ArrayList<Integer> getSubTasksInEpic() {
         return subTasksInEpic;
@@ -34,7 +35,8 @@ public class Epic extends Task {
         ArrayList<TaskStatus> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {
-            statuses.add(subtask.get(taskId).getStatus());
+            TaskStatus status1 = TaskStatus.valueOf(subtask.get(taskId).getStatus());
+            statuses.add(status1);
         }
 
         boolean isDone = !statuses.contains(TaskStatus.NEW) && !statuses.contains(TaskStatus.IN_PROGRESS);

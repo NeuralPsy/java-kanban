@@ -15,6 +15,20 @@ public class InMemoryTasksManager implements TaskManager {
 
     private static int newTaskId = 0;
 
+    public void addTaskToMap(Task task){
+        String taskClass = task.getClass().toString();
+
+        switch (taskClass){
+            case "Task" : tasksList.put(task.getTaskId(), task);
+                break;
+            case "Epic" :  epicsList.put(task.getTaskId(), (Epic) task);
+                break;
+            case "Subtask" : subTasksList.put(task.getTaskId(), (Subtask) task);
+                break;
+        }
+
+    }
+
     @Override
     public int addTask(String taskName, String description){
         newTaskId++;
@@ -109,8 +123,38 @@ public class InMemoryTasksManager implements TaskManager {
         } return taskToReturn;
     }
 
+    public Task recoverTask(int newTaskId){ // Возвращает задачу по ID, но не передает сведения о просмотре в историю
+        Task taskToReturn = null;
+        if (tasksList.containsKey(newTaskId)) {
+            taskToReturn = tasksList.get(newTaskId);
+        }
+        if (subTasksList.containsKey(newTaskId)){
+            taskToReturn = subTasksList.get(newTaskId);
+        }
+        if (epicsList.containsKey(newTaskId)){
+            taskToReturn = epicsList.get(newTaskId);
+        } return taskToReturn;
+    }
+
+
     public static String getHistory(){
-        return "" + history.getHistory();
+        StringBuilder stringHistory = new StringBuilder();
+        for (Integer x : history.getHistory()) stringHistory.append(x+",");
+       // stringHistory.deleteCharAt(-1);
+        return stringHistory.toString();
+    }
+
+    public void addToHistory(int taskId){
+        if (tasksList.containsKey(newTaskId)) {
+            this.history.add(tasksList.get(newTaskId));
+        }
+        if (subTasksList.containsKey(newTaskId)){
+            this.history.add(subTasksList.get(newTaskId));
+        }
+        if (epicsList.containsKey(newTaskId)){
+           this.history.add((epicsList.get(newTaskId)));
+        }
+
     }
 
 

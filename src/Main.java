@@ -51,7 +51,7 @@ public class Main {
 
         System.out.println("\nТестируем вывод истории просмотренных задач");
         System.out.println("*********ИСТОРИЯ ПРОСМОТРЕННЫХ ЗАДАЧ**********");
-        System.out.println(InMemoryTasksManager.getHistory());
+        System.out.println(inMemoryTasksManager.getHistory());
         System.out.println("**********************************************");
 
         System.out.println(inMemoryTasksManager.getTask(2));

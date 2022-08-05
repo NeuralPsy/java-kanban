@@ -56,7 +56,10 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         System.out.println(fileBackedTasksManager.getTask(6));
         System.out.println(fileBackedTasksManager.getTask(7));
 
+        System.out.println("Сохраняем историю в файл");
         fileBackedTasksManager.save();
+
+        System.out.println("Перемешиваем историю просмотров");
 
 
         System.out.println(fileBackedTasksManager.getTask(2));
@@ -69,15 +72,28 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         System.out.println(fileBackedTasksManager.getTask( 1));
         System.out.println(fileBackedTasksManager.getTask(4));
 
+        System.out.println("Сохраняем историю в файл");
+
         fileBackedTasksManager.save();
+        System.out.println("***ИСТОРИЯ ПРОСМОТРОВ В ПЕРВОМ МЕНЕДЖЕРЕ***");
 
         System.out.println(fileBackedTasksManager.getHistory());
 
+        System.out.println("Создаем второй менеджер");
+
         FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager(file);
 
+        System.out.println("Сохраняем историю в файл");
         fileBackedTasksManager2.save();
 
+        System.out.println("***ИСТОРИЯ ПРОСМОТРОВ ВО ВТОРОМ МЕНЕДЖЕРЕ***");
         System.out.println(fileBackedTasksManager2.getHistory());
+
+        System.out.println("***СРАВНИМ ИСТОРИЮ В ДВУХ МЕНЕДЖЕРАХ***");
+        System.out.println("Первый: "+ fileBackedTasksManager.getHistory());
+        System.out.println("Второй: "+ fileBackedTasksManager2.getHistory());
+
+        System.out.println("Перемешиваем историю просмотров");
 
         System.out.println(fileBackedTasksManager2.getTask(2));
         System.out.println(fileBackedTasksManager2.getTask(4));
@@ -88,7 +104,13 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         System.out.println(fileBackedTasksManager2.getTask(3));
         System.out.println(fileBackedTasksManager2.getTask(1));
 
-        System.out.println(fileBackedTasksManager2.getHistory());
+        System.out.println("Сохраняем историю в файл");
+        fileBackedTasksManager2.save();
+
+
+        System.out.println("***СРАВНИМ ИСТОРИЮ В ДВУХ МЕНЕДЖЕРАХ ПОСЛЕ ИЗМЕНЕНИЯ ЕЁ ВО ВТОРОМ***");
+        System.out.println("Первый: "+ fileBackedTasksManager.getHistory());
+        System.out.println("Второй: "+ fileBackedTasksManager2.getHistory());
 
     }
 
@@ -129,7 +151,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
 
 
-    public String toString(Task task) {
+    public String toString(Task task) throws IOException {
         String taskType = task.getType().name();
 
         // id,type,name,status,description,epic - чтобы не забыть
@@ -144,6 +166,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
                 taskString += ((Subtask) task).getEpicId();
             }
             return taskString;
+
     }
 
 

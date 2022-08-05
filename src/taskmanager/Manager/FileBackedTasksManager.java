@@ -181,18 +181,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     }
 
-    public String historyToString(InMemoryHistoryManager inMemoryHistoryManager){
-        StringBuilder history = new StringBuilder();
-        for (Integer x : inMemoryHistoryManager.getHistory()) history.append(x+",");
-        //history.deleteCharAt(-1); //чтобы убрать последнюю запятую
-        return history.toString();
-    }
-
-    static List<Integer> historyFromString(String string){
-        List<Integer> history = new ArrayList<>();
-        for (String x : string.split(",")) history.add(Integer.parseInt(x));
-        return history;
-    }
 
     static FileBackedTasksManager loadFromFile(File file) throws IOException {
         return new FileBackedTasksManager(file);

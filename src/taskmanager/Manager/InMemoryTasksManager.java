@@ -11,19 +11,19 @@ public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Task> tasksList = new HashMap<>();
     private HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
-    private static InMemoryHistoryManager history = new InMemoryHistoryManager();
+    private InMemoryHistoryManager history = new InMemoryHistoryManager();
 
     private static int newTaskId = 0;
 
     public void addTaskToMap(Task task){
-        String taskClass = task.getClass().toString();
+        String taskClass = task.getType().name();
 
         switch (taskClass){
-            case "Task" : tasksList.put(task.getTaskId(), task);
+            case "TASK" : tasksList.put(task.getTaskId(), task);
                 break;
-            case "Epic" :  epicsList.put(task.getTaskId(), (Epic) task);
+            case "EPIC" :  epicsList.put(task.getTaskId(), (Epic) task);
                 break;
-            case "Subtask" : subTasksList.put(task.getTaskId(), (Subtask) task);
+            case "SUBTASK" : subTasksList.put(task.getTaskId(), (Subtask) task);
                 break;
         }
 
@@ -137,7 +137,7 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
 
-    public static String getHistory(){
+    public String getHistory(){
         StringBuilder stringHistory = new StringBuilder();
         for (Integer x : history.getHistory()) stringHistory.append(x+",");
        // stringHistory.deleteCharAt(-1);
@@ -145,14 +145,14 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     public void addToHistory(int taskId){
-        if (tasksList.containsKey(newTaskId)) {
-            this.history.add(tasksList.get(newTaskId));
+        if (tasksList.containsKey(taskId)) {
+            history.add(tasksList.get(taskId));
         }
-        if (subTasksList.containsKey(newTaskId)){
-            this.history.add(subTasksList.get(newTaskId));
+        if (subTasksList.containsKey(taskId)){
+           history.add(subTasksList.get(taskId));
         }
-        if (epicsList.containsKey(newTaskId)){
-           this.history.add((epicsList.get(newTaskId)));
+        if (epicsList.containsKey(taskId)){
+           history.add((epicsList.get(taskId)));
         }
 
     }

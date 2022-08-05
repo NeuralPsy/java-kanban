@@ -11,7 +11,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     private static int newTaskId = 0;
     private Writer backedTasks;
 
-    private static InMemoryHistoryManager history = new InMemoryHistoryManager();
+    private InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 
     public static void main(String[] args) throws IOException {
         File file = new File("src/taskmanager/Manager/BackedData/FileBackedTasksManager.csv");
@@ -69,60 +69,67 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         System.out.println(fileBackedTasksManager.getTask( 1));
         System.out.println(fileBackedTasksManager.getTask(4));
 
-
-
         fileBackedTasksManager.save();
-        System.out.println(fileBackedTasksManager.historyToString());
+
+        System.out.println(fileBackedTasksManager.getHistory());
 
         FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager(file);
-        System.out.println(fileBackedTasksManager2.historyToString());
 
+        fileBackedTasksManager2.save();
 
+        System.out.println(fileBackedTasksManager2.getHistory());
+
+        System.out.println(fileBackedTasksManager2.getTask(2));
+        System.out.println(fileBackedTasksManager2.getTask(4));
+        System.out.println(fileBackedTasksManager2.getTask(1));
+        System.out.println(fileBackedTasksManager2.getTask(3));
+        System.out.println(fileBackedTasksManager2.getTask(4));
+        System.out.println(fileBackedTasksManager2.getTask(7));
+        System.out.println(fileBackedTasksManager2.getTask(3));
+        System.out.println(fileBackedTasksManager2.getTask(1));
+
+        System.out.println(fileBackedTasksManager2.getHistory());
 
     }
 
     public FileBackedTasksManager(File autoSaveFile) throws IOException, RuntimeException {
+
         try {
             this.file = autoSaveFile;
             this.backedTasks = new FileWriter(this.file, true);
+            Scanner reader = new Scanner(file);
+            loadHistory(reader);
+            System.out.println("Задачи загружены из файла автосохранения");
         } catch (NoSuchElementException exception){
             System.out.println("Список задач пуст. Создайте задачи и они появятся в файле автосохранения");
-        } finally {
-            Scanner reader = new Scanner(this.file);
-
-            try {
-                while (reader.hasNextLine()){
-                    String line = reader.nextLine();
-
-                    if (line.contains(":")){
-                        String[] arrayToSplit = line.replace("HISTORY:[", "")
-                                .replace("]", "")
-                                .replaceAll(" ","")
-                                .split(":");
-
-                        String stringHistory = arrayToSplit[1];
-                        for (String x : stringHistory.split(","))
-                            addToHistory(Integer.parseInt(x));
-                        System.out.println("История просмотров загружена");
-                        break;
-                    }
-
-                    Task task = fromString(line);
-                    addTaskToMap(task);
-                }
-                reader.close();
-                System.out.println("Задачи загружены из файла автосохранения");
-
-            } catch (ArrayIndexOutOfBoundsException exception){
-                System.out.println("ERROR occurred: " + exception.getMessage());
-            } catch (NoSuchElementException exception){
-                System.out.println("Список задач пуст. Создайте задачи и они появятся в файле автосохранения");
-            }
         }
     }
 
+    private void loadHistory(Scanner reader) {
 
-    public String toString(Task task) throws IOException {
+        while (reader.hasNextLine()){
+            String line = reader.nextLine();
+
+            if (line.contains(":")){
+                String[] arrayToSplit = line.split(":");
+
+                String stringHistory = arrayToSplit[1];
+                for (String x : stringHistory.split(",")) {
+                    addToHistory(Integer.parseInt(x));
+                }
+                System.out.println("История просмотров загружена");
+                break;
+            }
+
+            Task task = fromString(line);
+            addTaskToMap(task);
+        }
+        reader.close();
+    }
+
+
+
+    public String toString(Task task) {
         String taskType = task.getType().name();
 
         // id,type,name,status,description,epic - чтобы не забыть
@@ -174,9 +181,9 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     }
 
-    public String historyToString(){
+    public String historyToString(InMemoryHistoryManager inMemoryHistoryManager){
         StringBuilder history = new StringBuilder();
-        for (Integer x : this.history.getHistory()) history.append(x+",");
+        for (Integer x : inMemoryHistoryManager.getHistory()) history.append(x+",");
         //history.deleteCharAt(-1); //чтобы убрать последнюю запятую
         return history.toString();
     }
@@ -194,7 +201,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     void save() throws IOException {
         backedTasks = new FileWriter(this.file);
-       // backedTasks.write("id,type,name,status,description,epic\n");
+       // id,type,name,status,description,epic
 
         for (int taskId : getTasksList()) {
             Task task = recoverTask(taskId);
@@ -213,5 +220,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         backedTasks.write(getHistory());
         backedTasks.close();
     }
+
 
 }

@@ -13,4 +13,5 @@ public interface HistoryManager {
     void remove(Task task);
 
     public ArrayList<Task> getTasks();
+
 }

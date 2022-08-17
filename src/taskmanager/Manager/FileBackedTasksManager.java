@@ -7,7 +7,7 @@ import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTasksManager {
 
-    private File file;
+    private File file = new File("src/taskmanager/Manager/BackedData/FileBackedTasksManager.csv");
     private static int newTaskId = 0;
     private Writer backedTasks;
 
@@ -106,8 +106,8 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             addTaskToMap(task);
         }
 
-        if (task.getTaskId() > newTaskId) newTaskId = task.getTaskId(); // для того, чтобы можно было продолжить
-                                                                        // присваивать новые айди
+        if (task.getTaskId() > newTaskId) newTaskId = task.getTaskId();
+
         return task;
 
     }

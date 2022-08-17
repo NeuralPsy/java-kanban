@@ -6,9 +6,6 @@ import java.io.IOException;
 
 public class Main {
 
-    //Всё исправлено в соответствие с рекомендациями. Спасибо)
-
-
     public static void main(String[] args) throws IOException {
         InMemoryTasksManager inMemoryTasksManager = new InMemoryTasksManager();
 

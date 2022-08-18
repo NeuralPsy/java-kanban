@@ -140,10 +140,27 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
     @Test
     void removeTask() {
+        Task task1 = new Task("Test addNewTask", 0, "Test addNewTask description");
+        final int taskId1= taskManager.addTask(task1);
+        Task task2 = new Task("Test addNewTask", 0, "Test addNewTask description");
+        final int taskId2= taskManager.addTask(task2);
+
+        taskManager.removeTask(0);
+        assertEquals(1, taskManager.getTasksList().size(), "Не удалось удалить задачу");
+
+
     }
 
     @Test
     void removeSubTask() {
+        taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
+                "возвращающего список его подзадач");
+        taskManager.addSubTask("Подзадача №1 Эпика №1", "Эта задача для проверки метода, " +
+                "удаляющего подзадачу", 0);
+        taskManager.addSubTask("Подзадача №2 Эпика №1", "Эта задача для проверки метода, " +
+                "удаляющего подзадачу", 0);
+        taskManager.removeSubTask(1);
+        assertEquals(1, taskManager.getTasksList().size(), "Не удалось удалить подзадачу");
     }
 
     @Test

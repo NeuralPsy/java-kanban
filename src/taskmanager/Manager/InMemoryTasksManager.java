@@ -66,6 +66,11 @@ public class InMemoryTasksManager implements TaskManager {
         return newTaskId;
     }
 
+    public int addEpic(Epic epic){
+        epicsList.put(epic.getTaskId(), epic);
+        return epic.getTaskId();
+    }
+
     @Override
     public void removeTask(int taskId){
         if (tasksList.containsKey(taskId)) {

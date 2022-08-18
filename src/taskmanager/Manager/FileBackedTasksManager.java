@@ -67,7 +67,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         String taskString = task.getTaskId()+","+
                     taskType+","+
                     task.getTaskName()+","+
-                    task.getStatus()+","+
+                    task.getStatusAsString()+","+
                     task.getDescription()+",";
 
             if (taskType.equals("SUBTASK")){

@@ -1,5 +1,6 @@
 package taskmanager.Manager;
 
+import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Task;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public interface TaskManager {
     int addSubTask(String taskName, String description, int epicId);
 
     int addEpic(String taskName, String description);
+
+    int addEpic(Epic epic);
 
     void removeTask(int taskId);
 

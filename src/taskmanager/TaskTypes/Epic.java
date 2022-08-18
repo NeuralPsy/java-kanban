@@ -9,8 +9,13 @@ public class Epic extends Task {
     protected ArrayList<Integer> subTasksInEpic = new ArrayList<>();
 
     private static HashMap<Integer, Subtask> subTasksList = new HashMap<>();
-    public Epic(String taskName, int epicId, String description) {
-        super(taskName, epicId, description);
+    public Epic(String epicName, int epicId, String epicDescription) {
+        super(epicName, epicId, epicDescription);
+        this.type = TaskTypes.EPIC;
+    }
+
+    public Epic(Epic epic) {
+        super(epic);
         this.type = TaskTypes.EPIC;
     }
     public ArrayList<Integer> getSubTasksInEpic() {
@@ -35,7 +40,7 @@ public class Epic extends Task {
         ArrayList<TaskStatus> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {
-            TaskStatus status1 = TaskStatus.valueOf(subtask.get(taskId).getStatus());
+            TaskStatus status1 = TaskStatus.valueOf(subtask.get(taskId).getStatusAsString());
             statuses.add(status1);
         }
 
@@ -57,4 +62,11 @@ public class Epic extends Task {
                 +"Подзадачи эпика: " + subTasksInEpic+ "\n";
 
     }
+
+    @Override
+    public boolean equals(Object o){
+        if (o != this) return false;
+        return true;
+    }
+
 }

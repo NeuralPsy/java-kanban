@@ -29,9 +29,16 @@ public class Task {
 
 
 
-    public String getStatus() {
+    public String getStatusAsString() {
         return status.name();
     }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+
+
 
     public void setStatus(String string) {
         this.status = TaskStatus.valueOf(string);
@@ -45,6 +52,15 @@ public class Task {
         this.description = description;
 
     }
+
+    public Task(Task task){
+        this.taskName = task.getTaskName();
+        this.status = task.getStatus();
+        this.taskId = task.getTaskId();
+        this.description = task.getDescription();
+
+    }
+
 
     public void changeStatus(TaskStatus status){ // Оставил этот метод, хоть он и не нужен был по ТЗ.
         this.status = status;               // Мне кажется, что он может понадобиться

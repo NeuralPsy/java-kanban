@@ -165,6 +165,15 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
     @Test
     void getEpicsList() {
+        taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
+                "возвращающего список эпиков");
+        taskManager.addEpic("Эпик №2", "Это эпик для проверки метода, " +
+                "возвращающего список эпиков");
+        taskManager.addEpic("Эпик №3", "Это эпик для проверки метода, " +
+                "возвращающего список эпиков");
+        Integer[] epics = {0,1,2};
+        assertArrayEquals(epics, taskManager.getEpicsList().toArray(new Integer[0]));
+
     }
 
     @Test

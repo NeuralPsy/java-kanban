@@ -22,11 +22,13 @@ public class EpicTest {
 
         assertNotNull(savedEpic, "Эпик не создан. Список эпиков пуст.");
         assertEquals(epic, savedEpic, "Эпики не совпадают.");
-
         final ArrayList<Integer> epics = taskManager.getEpicsList();
 
         assertNotNull(epics, "Задачи на возвращаются.");
         assertEquals(1, epics.size(), "Количество эпиков неверное");
         assertEquals(epic, savedEpic, "Задачи не совпадают.");
+
     }
+
+
 }

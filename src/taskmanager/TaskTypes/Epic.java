@@ -2,6 +2,7 @@ package taskmanager.TaskTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Epic extends Task {
 
@@ -64,9 +65,11 @@ public class Epic extends Task {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o != this) return false;
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epic)) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(subTasksInEpic, epic.subTasksInEpic);
     }
 
 }

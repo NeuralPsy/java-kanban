@@ -37,6 +37,12 @@ public class InMemoryTasksManager implements TaskManager {
         return newTaskId;
     }
 
+    public int addTask(Task task){
+        Task newTask = new Task(task.getTaskName(), task.getTaskId(), task.getDescription());
+        tasksList.put(newTask.getTaskId(), newTask);
+        return newTask.getTaskId();
+    }
+
     @Override
     public ArrayList<Integer> getTasksList() {
         return new ArrayList<>(this.tasksList.keySet());
@@ -55,6 +61,15 @@ public class InMemoryTasksManager implements TaskManager {
         epicsList.get(epicId).addSubtaskToEpic(newTaskId);
         epicsList.get(epicId).setEpicStatus(subTasksList);
         return newTaskId;
+
+    }
+
+    public int convertTaskToSubtask(Task task, int epicId){
+        Subtask newSubTask = new Subtask(task, epicId);
+        subTasksList.put(newSubTask.getTaskId(), newSubTask);
+        epicsList.get(epicId).addSubtaskToEpic(newSubTask.getTaskId());
+        epicsList.get(epicId).setEpicStatus(subTasksList);
+        return newSubTask.getTaskId();
 
     }
 

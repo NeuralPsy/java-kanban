@@ -16,7 +16,7 @@ public class Epic extends Task {
     }
 
     public Epic(Epic epic) {
-        super(epic);
+        super(new Epic(epic));
         this.type = TaskTypes.EPIC;
     }
     public ArrayList<Integer> getSubTasksInEpic() {

@@ -26,4 +26,8 @@ public interface TaskManager {
     public ArrayList<Integer> getEpicsList();
 
     public Task getTask(int newTaskId);
+
+    int addTask(Task task);
+
+    public int convertTaskToSubtask(Task task, int epicId);
 }

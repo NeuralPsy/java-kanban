@@ -1,6 +1,7 @@
 package taskmanager.Manager;
 
 import taskmanager.TaskTypes.Epic;
+import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 
 import java.util.ArrayList;
@@ -30,4 +31,6 @@ public interface TaskManager {
     int addTask(Task task);
 
     public int convertTaskToSubtask(Task task, int epicId);
+
+    void addSubTask(Subtask subtask);
 }

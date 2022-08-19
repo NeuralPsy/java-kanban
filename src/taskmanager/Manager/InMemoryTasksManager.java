@@ -64,6 +64,16 @@ public class InMemoryTasksManager implements TaskManager {
 
     }
 
+    public int addSubTask(Subtask subtask){
+        Subtask newSubTask = new Subtask(subtask.getTaskName(), subtask.getTaskId(),
+                subtask.getDescription(), subtask.getEpicIdOfSubtask());
+        subTasksList.put(subtask.getTaskId(), newSubTask);
+        epicsList.get(subtask.getEpicIdOfSubtask()).addSubtaskToEpic(newTaskId);
+        epicsList.get(subtask.getEpicIdOfSubtask()).setEpicStatus(subTasksList);
+        return subtask.getTaskId();
+
+    }
+
     public int convertTaskToSubtask(Task task, int epicId){
         Subtask newSubTask = new Subtask(task, epicId);
         subTasksList.put(newSubTask.getTaskId(), newSubTask);
@@ -135,11 +145,11 @@ public class InMemoryTasksManager implements TaskManager {
         }
         if (subTasksList.containsKey(newTaskId)){
             history.add(subTasksList.get(newTaskId));
-            taskToReturn = subTasksList.get(newTaskId);
+            taskToReturn = (Subtask) subTasksList.get(newTaskId);
         }
         if (epicsList.containsKey(newTaskId)){
             history.add((epicsList.get(newTaskId)));
-            taskToReturn = epicsList.get(newTaskId);
+            taskToReturn = (Epic) epicsList.get(newTaskId);
         } return taskToReturn;
     }
 

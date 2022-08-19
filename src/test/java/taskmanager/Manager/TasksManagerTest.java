@@ -178,6 +178,25 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
     @Test
     void getTask() {
+        Task task = new Task("Задача без названия", 0, "Это задача для проверки метода, " +
+                "возвращающего таск по его id");
+        Epic epic = new Epic("Эпик без названия", 1 "Это эпик для проверки метода, " +
+                "возвращающего таск по его id");
+        Subtask subtask = new Subtask("Подзадача эпика", 2, "Это подзадача для проверки метода, " +
+                "возвращающего таск по его id", 1);
+        taskManager.addTask(task);
+        taskManager.addEpic(epic);
+        taskManager.addSubTask(subtask);
+        assertEquals(task, taskManager.getTask(0),"Возвращается неверная задача");
+        assertEquals("Task", taskManager.getTask(0).getClass(),
+                "Не удалось вернуть задачу из списка");
+        assertEquals(epic, taskManager.getTask(1),"Возвращается неверный эпик");
+        assertEquals("Epic", taskManager.getTask(1).getClass(),
+                "Не удалось вернуть эпик из списка");
+        assertEquals(subtask, taskManager.getTask(2),"Возвращается неверная подзадача");
+        assertEquals("Subtask", taskManager.getTask(2).getClass(),
+                "Не удалось вернуть подзадачу из списка");
+
     }
 
     @Test

@@ -1,5 +1,7 @@
 package taskmanager.TaskTypes;
 
+import java.util.Objects;
+
 public class Task {
 
 
@@ -79,5 +81,14 @@ public class Task {
                 +"Статус задачи: " + status+"\n"
                 +"Описание: " + description+"\n\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return taskId == task.taskId && Objects.equals(taskName, task.taskName) && Objects.equals(description, task.description) && status == task.status && type == task.type;
+    }
+
 
 }

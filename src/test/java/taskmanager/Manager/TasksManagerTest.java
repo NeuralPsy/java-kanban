@@ -180,7 +180,7 @@ abstract class TasksManagerTest<T extends TaskManager> {
     void getTask() {
         Task task = new Task("Задача без названия", 0, "Это задача для проверки метода, " +
                 "возвращающего таск по его id");
-        Epic epic = new Epic("Эпик без названия", 1 "Это эпик для проверки метода, " +
+        Epic epic = new Epic("Эпик без названия", 1, "Это эпик для проверки метода, " +
                 "возвращающего таск по его id");
         Subtask subtask = new Subtask("Подзадача эпика", 2, "Это подзадача для проверки метода, " +
                 "возвращающего таск по его id", 1);
@@ -201,10 +201,34 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
     @Test
     void recoverTask() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        taskManager.addTask("Задача №1", "Это первая задача для проверки метода, " +
+                "возвращающего таск, не добавляя его в историю просмотров");
+        taskManager.addTask("Задача №2", "Это вторая задача для проверки метода, " +
+                "возвращающего таск, не добавляя его в историю просмотров");
+        taskManager.addEpic("Это эпик", "Это эпик для проверки метода, " +
+                "возвращающего таск, не добавляя его в историю просмотров");
+        Task task1 = taskManager.getTask(0);
+        Task task2 = taskManager.getTask(1);
+        Epic epic = (Epic) taskManager.getTask(2);
+        int historySize = historyManager.getHistory().size();
+        Task task1Recovered = taskManager.recoverTask(0);
+        int historySizeAfterRecovering = historyManager.getHistory().size();
+        assertEquals(historySize, historySizeAfterRecovering, "Задача не должна попадать в историю " +
+                "просмотров после восстановления");
     }
 
     @Test
     void getHistory() {
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        taskManager.addTask("Задача №1", "Это первая задача для проверки метода, " +
+                "возвращающего историю просмотров");
+        taskManager.addTask("Задача №2", "Это вторая задача для проверки метода, " +
+                "возвращающего историю просмотров");
+        taskManager.addEpic("Это эпик", "Это эпик для проверки метода, " +
+                "возвращающего историю просмотров");
+        String history = taskManager.getHistory().toString();
+        //assertEquals("");
     }
 
     @Test

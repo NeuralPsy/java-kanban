@@ -64,13 +64,14 @@ public class InMemoryTasksManager implements TaskManager {
 
     }
 
+    @Override
     public int addSubTask(Subtask subtask){
         Subtask newSubTask = new Subtask(subtask.getTaskName(), subtask.getTaskId(),
                 subtask.getDescription(), subtask.getEpicIdOfSubtask());
-        subTasksList.put(subtask.getTaskId(), newSubTask);
-        epicsList.get(subtask.getEpicIdOfSubtask()).addSubtaskToEpic(newTaskId);
-        epicsList.get(subtask.getEpicIdOfSubtask()).setEpicStatus(subTasksList);
-        return subtask.getTaskId();
+        subTasksList.put(newSubTask.getTaskId(), newSubTask);
+        epicsList.get(newSubTask.getEpicIdOfSubtask()).addSubtaskToEpic(newSubTask.getTaskId());
+        epicsList.get(newSubTask.getEpicIdOfSubtask()).setEpicStatus(subTasksList);
+        return newSubTask.getTaskId();
 
     }
 

@@ -32,5 +32,9 @@ public interface TaskManager {
 
     public int convertTaskToSubtask(Task task, int epicId);
 
-    void addSubTask(Subtask subtask);
+    public int addSubTask(Subtask subtask);
+
+    public Task recoverTask(int newTaskId);
+
+    public String getHistory();
 }

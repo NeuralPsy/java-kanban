@@ -10,7 +10,7 @@ public class Main {
         InMemoryTasksManager inMemoryTasksManager = new InMemoryTasksManager();
 
         File file = new File("src/taskmanager/Manager/BackedData/FileBackedTasksManager.csv");
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
+        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
 
         String taskName1 = "Задача №1";
         String task1Description = "Описание задачи №1";
@@ -76,7 +76,7 @@ public class Main {
 
         System.out.println("Создаем второй менеджер");
 
-        FileBackedTasksManager fileBackedTasksManager2 = new FileBackedTasksManager(file);
+        FileBackedTasksManager fileBackedTasksManager2 = FileBackedTasksManager.loadFromFile(file);
 
         System.out.println("Сохраняем историю в файл");
         fileBackedTasksManager2.save();

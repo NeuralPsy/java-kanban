@@ -171,7 +171,6 @@ public class InMemoryTasksManager implements TaskManager {
     public String getHistory(){
         StringBuilder stringHistory = new StringBuilder();
         for (Integer x : history.getHistory()) stringHistory.append(x+",");
-       // stringHistory.deleteCharAt(-1);
         return stringHistory.toString();
     }
 

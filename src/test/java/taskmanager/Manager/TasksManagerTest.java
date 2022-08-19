@@ -50,7 +50,7 @@ abstract class TasksManagerTest {
         int task2Id = taskManager.addTask("Задача №2", "Эта задача для проверки метода, возвращающего список задач");
         int task3Id = taskManager.addTask("Задача №3", "Эта задача для проверки метода, возвращающего список задач");
         Integer[] tasksList = taskManager.getTasksList().toArray(new Integer[0]);
-        Integer[] listToCompare = {0,1,2};
+        Integer[] listToCompare = {task1Id,task2Id,task3Id};
         assertArrayEquals(listToCompare, tasksList);
     }
 

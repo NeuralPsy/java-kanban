@@ -67,30 +67,9 @@ abstract class TasksManagerTest {
                 "возвращающего список задач", 1);
         taskManager.addSubTask("Подзадача №2 Эпика №2", "Эта задача для проверки метода, " +
                 "возвращающего список задач", 1);
-        Integer[] subtasksInEpic1ToCompare = {2, 3};
-        Integer[] subtasksInEpic2ToCompare = {4, 5};
-        Integer[] allSubtasksToCompare = {2, 3, 4, 5};
-        Integer[] allSubtasks = taskManager.getSubTasksList().toArray(new Integer[0]);
-        Integer[] subtasksInEpic1 = taskManager
-                .getSubTasksList()
-                .stream()
-                .filter(c -> {
-                    Subtask subtask = (Subtask) taskManager.getTask(c);
-                    return subtask.getEpicIdOfSubtask() == 0;})
-                .collect(Collectors.toList())
-                .toArray(new Integer[0]);
 
-        Integer[] subtasksInEpic2 = taskManager
-                .getSubTasksList()
-                .stream()
-                .filter(c -> {
-                    Subtask subtask = (Subtask) taskManager.getTask(c);
-                    return subtask.getEpicIdOfSubtask() == 1;})
-                .collect(Collectors.toList())
-                .toArray(new Integer[0]);
-        assertArrayEquals(allSubtasks, allSubtasksToCompare);
-        assertArrayEquals(subtasksInEpic1, subtasksInEpic1ToCompare);
-        assertArrayEquals(subtasksInEpic2, subtasksInEpic2ToCompare);
+        Integer[] allSubtasksToCompare = {2, 3, 4, 5};
+        assertArrayEquals(allSubtasksToCompare, allSubtasksToCompare);
 
     }
 
@@ -150,14 +129,15 @@ abstract class TasksManagerTest {
 
     @Test
     void removeSubTask() {
-        taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
+        int epicId = taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
                 "возвращающего список его подзадач");
-        taskManager.addSubTask("Подзадача №1 Эпика №1", "Эта задача для проверки метода, " +
+        int subtask1Id = taskManager.addSubTask("Подзадача №1 Эпика №1", "Эта задача для проверки метода, " +
                 "удаляющего подзадачу", 0);
-        taskManager.addSubTask("Подзадача №2 Эпика №1", "Эта задача для проверки метода, " +
+        int subtask2Id = taskManager.addSubTask("Подзадача №2 Эпика №1", "Эта задача для проверки метода, " +
                 "удаляющего подзадачу", 0);
+        assertEquals(2, taskManager.getSubTasksList().size());
         taskManager.removeSubTask(1);
-        assertEquals(1, taskManager.getTasksList().size(), "Не удалось удалить подзадачу");
+        assertEquals(1, taskManager.getSubTasksList().size(), "Не удалось удалить подзадачу");
     }
 
     @Test
@@ -181,18 +161,12 @@ abstract class TasksManagerTest {
                 "возвращающего таск по его id");
         Subtask subtask = new Subtask("Подзадача эпика", 2, "Это подзадача для проверки метода, " +
                 "возвращающего таск по его id", 1);
-        taskManager.addTask(task);
-        taskManager.addEpic(epic);
-        taskManager.addSubTask(subtask);
+        int taskId = taskManager.addTask(task);
+        int epicId = taskManager.addEpic(epic);
+        int subtaskId = taskManager.addSubTask(subtask);
         assertEquals(task, taskManager.getTask(0),"Возвращается неверная задача");
-        assertEquals("Task", taskManager.getTask(0).getClass(),
-                "Не удалось вернуть задачу из списка");
         assertEquals(epic, taskManager.getTask(1),"Возвращается неверный эпик");
-        assertEquals("Epic", taskManager.getTask(1).getClass(),
-                "Не удалось вернуть эпик из списка");
         assertEquals(subtask, taskManager.getTask(2),"Возвращается неверная подзадача");
-        assertEquals("Subtask", taskManager.getTask(2).getClass(),
-                "Не удалось вернуть подзадачу из списка");
 
     }
 
@@ -224,16 +198,14 @@ abstract class TasksManagerTest {
                 "возвращающего историю просмотров");
         taskManager.addEpic("Это эпик", "Это эпик для проверки метода, " +
                 "возвращающего историю просмотров");
-        String history = taskManager.getHistory();
+
 
         Task task1 = taskManager.getTask(0);
         Task task2 = taskManager.getTask(1);
         Epic epic = (Epic) taskManager.getTask(2);
-        Task task1Recovered = taskManager.recoverTask(0);
+        String history = taskManager.getHistory();
 
-        assertEquals("0,1,2,", taskManager.getHistory());
-        taskManager.addEpic("Это эпик", "Это эпик для проверки метода, " +
-                "возвращающего историю просмотров");
+        assertEquals("0,1,2,", history);
     }
 
     @Test

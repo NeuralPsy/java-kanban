@@ -5,23 +5,22 @@ import org.junit.jupiter.api.Test;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
-import taskmanager.TaskTypes.TaskStatus;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class TasksManagerTest<T extends TaskManager> {
-    T taskManager;
+abstract class TasksManagerTest {
+    private TaskManager taskManager;
+
 
     @BeforeEach
-    void setUp(T taskManager) {
-        this.taskManager = taskManager;
+    void setUp() {
+        taskManager = createTaskManager();
     }
+
+    abstract public TaskManager createTaskManager();
 
     @Test
     void addTaskToMap() {
@@ -29,7 +28,7 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
     @Test
     void addTask() {
-        Task task = new Task("Test addNewTask", 0, "Test addNewTask description");
+        final Task task = new Task("Test addNewTask", 0, "Test addNewTask description");
         final int taskId = taskManager.addTask(task);
 
         final Task savedTask = taskManager.getTask(taskId);
@@ -41,8 +40,6 @@ abstract class TasksManagerTest<T extends TaskManager> {
 
         assertNotNull(tasks, "Задачи на возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.get(0), "Задачи не совпадают.");
-
     }
 
     @Test

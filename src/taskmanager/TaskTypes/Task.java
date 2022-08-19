@@ -90,5 +90,8 @@ public class Task {
         return taskId == task.taskId && Objects.equals(taskName, task.taskName) && Objects.equals(description, task.description) && status == task.status && type == task.type;
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskName, description, taskId, status, type);
+    }
 }

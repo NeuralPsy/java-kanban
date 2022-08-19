@@ -39,7 +39,7 @@ public class Epic extends Task {
 
     }
 
-    public void setEpicStatus(HashMap<Integer, Subtask> subtask){ // Проверяет статус эпика.
+    public void setEpicStatus(HashMap<Integer, Subtask> subtask){
         ArrayList<TaskStatus> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {

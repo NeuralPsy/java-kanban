@@ -45,7 +45,7 @@ public class InMemoryTasksManager implements TaskManager {
 
     @Override
     public ArrayList<Integer> getTasksList() {
-        return new ArrayList<>(this.tasksList.keySet());
+        return new ArrayList<>(tasksList.keySet());
     }
 
     @Override

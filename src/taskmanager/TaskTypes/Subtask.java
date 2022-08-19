@@ -9,6 +9,7 @@ public class Subtask extends Task {
         this.epicId = epicId;
         this.status = TaskStatus.NEW;
         this.type = TaskTypes.SUBTASK;
+        this.hasEpic = true;
     }
 
     public Subtask(Task task, int epicId) {
@@ -16,6 +17,7 @@ public class Subtask extends Task {
         this.epicId = epicId;
         this.status = TaskStatus.NEW;
         this.type = TaskTypes.SUBTASK;
+        this.hasEpic = true;
     }
 
     public Subtask(Subtask subtask) {
@@ -23,6 +25,7 @@ public class Subtask extends Task {
         this.epicId = subtask.getEpicIdOfSubtask();
         this.status = TaskStatus.NEW;
         this.type = TaskTypes.SUBTASK;
+        this.hasEpic = true;
     }
 
     public int getEpicIdOfSubtask(){
@@ -41,4 +44,5 @@ public class Subtask extends Task {
     public int getEpicId() {
         return this.epicId;
     }
+
 }

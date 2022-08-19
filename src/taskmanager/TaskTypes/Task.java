@@ -10,6 +10,7 @@ public class Task {
     protected final int taskId;
     protected TaskStatus status;
     protected TaskTypes type = TaskTypes.TASK;
+    protected boolean hasEpic = false;
 
     public TaskTypes getType() {
         return type;

@@ -240,6 +240,12 @@ abstract class TasksManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void addToHistory() {
+    void getEpicIdFromSubtask(){
+        taskManager.addEpic("Эпик", "Это эпик для проверки метода, " +
+                "возвращающего id из его подзадачи");
+        taskManager.addSubTask("Подзадача", "Эта задача для проверки метода, " +
+                "возвращающего id эпика из его подзадачи", 0);
+        Subtask subtask = (Subtask) taskManager.getTask(1);
+        assertEquals(0, subtask.getEpicIdOfSubtask(), "Id эпика не возвращается из под задачи");
     }
 }

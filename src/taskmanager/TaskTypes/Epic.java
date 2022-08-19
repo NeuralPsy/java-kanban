@@ -9,7 +9,7 @@ public class Epic extends Task {
 
     protected ArrayList<Integer> subTasksInEpic = new ArrayList<>();
 
-    private static HashMap<Integer, Subtask> subTasksList = new HashMap<>();
+    private  HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     public Epic(String epicName, int epicId, String epicDescription) {
         super(epicName, epicId, epicDescription);
         this.type = TaskTypes.EPIC;
@@ -34,7 +34,9 @@ public class Epic extends Task {
 
 
     public void removeSubTask(int subtaskId){
+        subTasksInEpic.remove(subTasksInEpic.indexOf(subtaskId));
         subTasksList.remove(subtaskId);
+
     }
 
     public void setEpicStatus(HashMap<Integer, Subtask> subtask){ // Проверяет статус эпика.

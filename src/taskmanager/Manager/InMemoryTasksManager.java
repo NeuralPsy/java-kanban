@@ -123,9 +123,8 @@ public class InMemoryTasksManager implements TaskManager {
             if (epicsList.get(epicId).
                     getSubTasksInEpic().
                     contains(subTaskId)){
-                epicsList.get(epicId).
-                        getSubTasksInEpic().
-                        remove(subTaskId);
+
+                epicsList.get(epicId).removeSubTask(subTaskId);
                 subTasksList.remove(subTaskId);
                 break;
             }

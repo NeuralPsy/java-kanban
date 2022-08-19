@@ -6,7 +6,9 @@ import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,13 +46,12 @@ abstract class TasksManagerTest {
 
     @Test
     void getTasksList() {
-        taskManager.addTask("Задача №1", "Эта задача для проверки метода, возвращающего список задач");
-        taskManager.addTask("Задача №2", "Эта задача для проверки метода, возвращающего список задач");
-        taskManager.addTask("Задача №3", "Эта задача для проверки метода, возвращающего список задач");
-        ArrayList<Integer> tasksList = taskManager.getTasksList();
-        Integer[] arrayToCompare = {0, 1, 2};
-        Integer[] tasksArray = tasksList.toArray(tasksList.toArray(new Integer[0]));
-        assertArrayEquals(arrayToCompare, tasksArray);
+        int task1Id = taskManager.addTask("Задача №1", "Эта задача для проверки метода, возвращающего список задач");
+        int task2Id = taskManager.addTask("Задача №2", "Эта задача для проверки метода, возвращающего список задач");
+        int task3Id = taskManager.addTask("Задача №3", "Эта задача для проверки метода, возвращающего список задач");
+        Integer[] tasksList = taskManager.getTasksList().toArray(new Integer[0]);
+        Integer[] listToCompare = {0,1,2};
+        assertArrayEquals(listToCompare, tasksList);
     }
 
     @Test
@@ -75,24 +76,15 @@ abstract class TasksManagerTest {
 
     @Test
     void addSubTask() {
-        taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
+        int epicId = taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
                 "добавляющего подзадачу");
-        Task taskToSubtask = new Task("Подзадача №1 Эпика №1", 1,
-                "Эта задача для проверки метода, добавляющего подзадачу");
 
-        taskManager.convertTaskToSubtask(taskToSubtask, 0);
+        int subtaskId = taskManager.addSubTask("Подзадача №1 Эпика №1",
+                "Эта задача для проверки метода, добавляющего подзадачу", 0);
 
-        final Subtask savedSubtask = (Subtask) taskManager.getTask(1);
+        Epic epic = (Epic) taskManager.getTask(0);
 
-        assertNotNull(savedSubtask, "Подзадача не найдена.");
-        assertEquals(taskToSubtask, savedSubtask, "Подзадачи не совпадают.");
-
-        final ArrayList<Integer> subtasks = taskManager.getSubTasksList();
-
-        assertNotNull(subtasks, " Подзадачи на возвращаются.");
-        assertEquals(1, taskManager.getSubTasksList().size(), "Неверное количество задач.");
-        assertEquals(0, savedSubtask.getEpicIdOfSubtask(), "Эпика с id "+
-                savedSubtask.getEpicIdOfSubtask()+" не существует");
+        assertTrue(epic.getSubTasksInEpic().contains(1));
 
     }
 
@@ -131,10 +123,10 @@ abstract class TasksManagerTest {
     void removeSubTask() {
         int epicId = taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
                 "возвращающего список его подзадач");
-        int subtask1Id = taskManager.addSubTask("Подзадача №1 Эпика №1", "Эта задача для проверки метода, " +
-                "удаляющего подзадачу", 0);
-        int subtask2Id = taskManager.addSubTask("Подзадача №2 Эпика №1", "Эта задача для проверки метода, " +
-                "удаляющего подзадачу", 0);
+        int subtask1Id = taskManager.addSubTask("Подзадача №1 Эпика №1",
+                "Эта задача для проверки метода, удаляющего подзадачу", 0);
+        int subtask2Id = taskManager.addSubTask("Подзадача №2 Эпика №1",
+                "Эта задача для проверки метода, удаляющего подзадачу", 0);
         assertEquals(2, taskManager.getSubTasksList().size());
         taskManager.removeSubTask(1);
         assertEquals(1, taskManager.getSubTasksList().size(), "Не удалось удалить подзадачу");
@@ -148,8 +140,8 @@ abstract class TasksManagerTest {
                 "возвращающего список эпиков");
         taskManager.addEpic("Эпик №3", "Это эпик для проверки метода, " +
                 "возвращающего список эпиков");
-        Integer[] epics = {0,1,2};
-        assertArrayEquals(epics, taskManager.getEpicsList().toArray(new Integer[0]));
+        ArrayList<Integer> epics = new ArrayList<>(Arrays.asList(0,1,2));
+        assertEquals(epics, taskManager.getEpicsList());
 
     }
 
@@ -210,9 +202,9 @@ abstract class TasksManagerTest {
 
     @Test
     void getEpicIdFromSubtask(){
-        taskManager.addEpic("Эпик", "Это эпик для проверки метода, " +
+        int e = taskManager.addEpic("Эпик", "Это эпик для проверки метода, " +
                 "возвращающего id из его подзадачи");
-        taskManager.addSubTask("Подзадача", "Эта задача для проверки метода, " +
+        int st = taskManager.addSubTask("Подзадача", "Эта задача для проверки метода, " +
                 "возвращающего id эпика из его подзадачи", 0);
         Subtask subtask = (Subtask) taskManager.getTask(1);
         assertEquals(0, subtask.getEpicIdOfSubtask(), "Id эпика не возвращается из под задачи");

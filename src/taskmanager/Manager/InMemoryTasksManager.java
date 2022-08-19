@@ -50,7 +50,7 @@ public class InMemoryTasksManager implements TaskManager {
 
     @Override
     public ArrayList<Integer> getSubTasksList() {
-        return new ArrayList<>(this.subTasksList.keySet());
+        return new ArrayList<>(subTasksList.keySet());
     }
 
     @Override
@@ -123,9 +123,8 @@ public class InMemoryTasksManager implements TaskManager {
             if (epicsList.get(epicId).
                     getSubTasksInEpic().
                     contains(subTaskId)){
-
-                epicsList.get(epicId).removeSubTask(subTaskId);
                 subTasksList.remove(subTaskId);
+                epicsList.get(epicId).removeSubTask(subTaskId);
                 break;
             }
         }

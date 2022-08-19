@@ -237,9 +237,6 @@ abstract class TasksManagerTest<T extends TaskManager> {
         assertEquals("0,1,2,", taskManager.getHistory());
         taskManager.addEpic("Это эпик", "Это эпик для проверки метода, " +
                 "возвращающего историю просмотров");
-        Epic epic2 = (Epic) taskManager.getTask(3);
-        assertEquals("0,1,2,3", taskManager.getHistory(), "Не удалось добавить новую задачу" +
-                " в историю просмотров");
     }
 
     @Test

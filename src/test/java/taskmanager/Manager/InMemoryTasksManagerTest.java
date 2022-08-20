@@ -1,9 +1,9 @@
 package taskmanager.Manager;
 
-class InMemoryTasksManagerTest extends TasksManagerTest {
+class InMemoryTasksManagerTest extends TasksManagerTest<InMemoryTasksManager> {
 
     @Override
-    public TaskManager createTaskManager() {
+    public InMemoryTasksManager createTaskManager() {
         return new InMemoryTasksManager();
     }
 

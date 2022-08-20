@@ -40,4 +40,5 @@ public interface TaskManager {
     public String getHistory();
 
     public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus);
+
 }

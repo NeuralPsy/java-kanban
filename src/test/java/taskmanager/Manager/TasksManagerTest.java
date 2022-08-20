@@ -12,16 +12,15 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class TasksManagerTest {
-    private TaskManager taskManager;
+abstract class TasksManagerTest<T extends TaskManager> {
+    protected T taskManager;
 
-    abstract public TaskManager createTaskManager();
+    abstract public T createTaskManager();
 
     @BeforeEach
     void setTaskManager() {
         taskManager = createTaskManager();
     }
-
 
 
     @Test
@@ -217,10 +216,10 @@ abstract class TasksManagerTest {
         Task task1 = taskManager.getTask(task1Id);
         Task task2 = taskManager.getTask(task2Id);
         Epic epic = (Epic) taskManager.getTask(task3Id);
-        String expectedHistory = task1Id+","+task2Id+","+task3Id+",";
-        String realHistory = taskManager.getHistory();
+        String expectation = task1Id+","+task2Id+","+task3Id+",";
+        String reality = taskManager.getHistory();
 
-        assertEquals(expectedHistory, realHistory);
+        assertEquals(expectation, reality);
     }
 
     @Test

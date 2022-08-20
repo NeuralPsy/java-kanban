@@ -7,7 +7,6 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        InMemoryTasksManager inMemoryTasksManager = new InMemoryTasksManager();
 
         File file = new File("src/taskmanager/Manager/BackedData/FileBackedTasksManager.csv");
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);

@@ -1,5 +1,6 @@
 package taskmanager.Manager;
 
+import taskmanager.Manager.Exceptions.ManagerSaveException;
 import taskmanager.TaskTypes.*;
 
 import java.io.*;
@@ -7,7 +8,7 @@ import java.util.*;
 
 public class FileBackedTasksManager extends InMemoryTasksManager {
 
-    private File file = new File("src/taskmanager/Manager/BackedData/FileBackedTasksManager.csv");
+    private File file = new File("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
     private static int newTaskId = 0;
     private Writer backedTasks;
 
@@ -17,16 +18,17 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     }
 
-    public FileBackedTasksManager(File autoSaveFile) throws IOException, RuntimeException {
+    public FileBackedTasksManager(File autoSaveFile) {
 
         try {
             this.file = autoSaveFile;
             this.backedTasks = new FileWriter(this.file, true);
             Scanner reader = new Scanner(file);
             loadHistory(reader);
-            System.out.println("Задачи загружены из файла автосохранения");
-        } catch (NoSuchElementException exception){
-            System.out.println("Список задач пуст. Создайте задачи и они появятся в файле автосохранения");
+        } catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+        } catch (IOException e){
+            System.out.println(e.getMessage());
         }
     }
 
@@ -42,7 +44,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
                 for (String x : stringHistory.split(",")) {
                     addToHistory(Integer.parseInt(x));
                 }
-                System.out.println("История просмотров загружена");
                 break;
             }
 
@@ -52,12 +53,10 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         reader.close();
     }
 
-
-
-    public String toString(Task task) throws IOException {
+    public String convertTaskToString(Task task) {
         String taskType = task.getType().name();
 
-        // id,type,name,status,description,epic - чтобы не забыть
+        // id,type,name,status,description,epic
 
         String taskString = task.getTaskId()+","+
                     taskType+","+
@@ -104,31 +103,41 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     }
 
 
-    public static FileBackedTasksManager loadFromFile(File file) throws IOException {
-        return new FileBackedTasksManager(file);
+    public static FileBackedTasksManager loadFromFile(File file) throws NoSuchElementException{
+        FileBackedTasksManager tasksManager = null;
+        try {
+            tasksManager = new FileBackedTasksManager(file);
+        } catch (NoSuchElementException e){
+            System.out.println(e.getMessage());
+        } return tasksManager;
+
     }
 
 
-    public void save() throws IOException {
-        backedTasks = new FileWriter(this.file);
-       // id,type,name,status,description,epic
+    public void save() throws ManagerSaveException {
+        try {
+            backedTasks = new FileWriter(this.file);
+            // id,type,name,status,description,epic
 
-        for (int taskId : getTasksList()) {
-            Task task = recoverTask(taskId);
-            backedTasks.write(toString(task)+"\n");
-        }
-        for (int taskId : getSubTasksList()) {
-            Task task = recoverTask(taskId);
-            backedTasks.write(toString(task)+"\n");
-        }
-        for (int taskId : getEpicsList()) {
-            Task task = recoverTask(taskId);
-            backedTasks.write(toString(task)+"\n");
-        }
+            for (int taskId : getTasksList()) {
+                Task task = recoverTask(taskId);
+                backedTasks.write(convertTaskToString(task) + "\n");
+            }
+            for (int taskId : getSubTasksList()) {
+                Task task = recoverTask(taskId);
+                backedTasks.write(convertTaskToString(task) + "\n");
+            }
+            for (int taskId : getEpicsList()) {
+                Task task = recoverTask(taskId);
+                backedTasks.write(convertTaskToString(task) + "\n");
+            }
 
-        backedTasks.write("HISTORY:");
-        backedTasks.write(getHistory());
-        backedTasks.close();
+            backedTasks.write("HISTORY:");
+            backedTasks.write(getHistory());
+            backedTasks.close();
+        } catch (IOException e){
+            throw new ManagerSaveException();
+        }
     }
 
 

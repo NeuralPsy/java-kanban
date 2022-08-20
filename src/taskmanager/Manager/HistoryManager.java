@@ -14,4 +14,6 @@ public interface HistoryManager {
 
     public ArrayList<Task> getTasks();
 
+    public String getStringHistory();
+
 }

@@ -46,16 +46,16 @@ public class InMemoryHistoryManager implements HistoryManager {
         return new ArrayList<>(history.getTaskIdMap().values());
     }
 
-//    public String getStringHistory(){
-//       String listString = "";
-//
-//       for(int x = 0; x < history.getTaskIdList().size(); x++){
-//           if (x == getHistory().size()-1) listString += history.getTaskIdList().get(x);
-//           listString += history.getTaskIdList().get(x)+",";
-//       }
-//
-//       return listString;
-//    }
+    public String getStringHistory(){
+       String listString = "";
+
+       for(int x = 0; x < history.getTaskIdList().size(); x++){
+           if (x == getHistory().size()-1) listString += history.getTaskIdList().get(x);
+           listString += history.getTaskIdList().get(x)+",";
+       }
+
+       return listString;
+    }
 
 
 

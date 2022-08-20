@@ -13,11 +13,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     private InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 
-    public static void main(String[] args) throws IOException {
-
-
-    }
-
     public FileBackedTasksManager(){
 
     }

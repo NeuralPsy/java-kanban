@@ -7,10 +7,8 @@ import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 import taskmanager.TaskTypes.TaskStatus;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,7 +52,7 @@ abstract class TasksManagerTest {
                 "Эта задача для проверки метода, возвращающего список задач");
         final int task3Id = taskManager.addTask("Задача №3",
                 "Эта задача для проверки метода, возвращающего список задач");
-        Integer[] expectedTasksList = {task3Id,task1Id,task2Id};
+        Integer[] expectedTasksList = {task1Id,task2Id,task3Id};
         Integer[] realTasksList = taskManager.getTasksList().toArray(new Integer[0]);
         assertArrayEquals(expectedTasksList, realTasksList);
     }

@@ -12,9 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTest {
 
-    HistoryManager historyManager = new InMemoryHistoryManager();
+    HistoryManager historyManager;
 
     void setUp() {
+        historyManager = new InMemoryHistoryManager();
         Task task = new Task("Задача", 0, "Без названия");
         Task task2 = new Task("Задача", 1, "Без названия");
         Task task3 = new Task("Задача", 2, "Без названия");
@@ -33,6 +34,11 @@ class HistoryManagerTest {
         historyManager.add(subtask2);
     }
 
+    @BeforeEach
+    void setHistoryManager() {
+        historyManager = new InMemoryHistoryManager();
+    }
+
     @Test
     void shouldAddTaskToHistory() {
         Task task = new Task("Задача", 0, "Без названия");
@@ -49,7 +55,6 @@ class HistoryManagerTest {
     @Test
     void getHistory() {
         setUp();
-
         ArrayList<Integer> history = historyManager.getHistory();
         assertEquals(8, history.size());
 

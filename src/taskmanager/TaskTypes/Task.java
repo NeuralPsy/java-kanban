@@ -1,5 +1,6 @@
 package taskmanager.TaskTypes;
 
+import java.time.*;
 import java.util.Objects;
 
 public class Task {
@@ -11,6 +12,21 @@ public class Task {
     protected TaskStatus status;
     protected TaskTypes type = TaskTypes.TASK;
     protected boolean hasEpic = false;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
+
+
+    public void setTime(LocalDate date, LocalTime time, Duration duration) {
+        this.startTime = LocalDateTime.of(date, time);
+        this.duration = Duration.ofMinutes(duration.toMinutes());
+        this.endTime = startTime.plusMinutes(duration.toMinutes());
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
 
     public TaskTypes getType() {
         return type;

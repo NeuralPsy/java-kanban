@@ -3,6 +3,7 @@ package taskmanager.Manager;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
+import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
 
@@ -37,4 +38,6 @@ public interface TaskManager {
     public Task recoverTask(int newTaskId);
 
     public String getHistory();
+
+    public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus);
 }

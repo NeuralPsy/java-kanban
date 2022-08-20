@@ -16,6 +16,10 @@ public class Task {
         return type;
     }
 
+    public boolean hasEpicOrNo(){
+        return hasEpic;
+    }
+
 
 
     public String getDescription() {
@@ -43,8 +47,8 @@ public class Task {
 
 
 
-    public void setStatus(String string) {
-        this.status = TaskStatus.valueOf(string);
+    public void setStatus(TaskStatus taskStatus) {
+        this.status = taskStatus;
     }
 
 

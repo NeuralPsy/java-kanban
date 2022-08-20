@@ -3,6 +3,7 @@ package taskmanager.Manager;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
+import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,8 +59,8 @@ public class InMemoryTasksManager implements TaskManager {
         newTaskId++;
         Subtask newSubTask = new Subtask(taskName, newTaskId, description, epicId);
         subTasksList.put(newTaskId, newSubTask);
-        epicsList.get(epicId).addSubtaskToEpic(newTaskId);
-        epicsList.get(epicId).setEpicStatus(subTasksList);
+        epicsList.get(epicId).addSubtaskToEpic(newSubTask);
+        epicsList.get(epicId).setEpicStatus();
         return newTaskId;
 
     }
@@ -69,8 +70,8 @@ public class InMemoryTasksManager implements TaskManager {
         Subtask newSubTask = new Subtask(subtask.getTaskName(), subtask.getTaskId(),
                 subtask.getDescription(), subtask.getEpicIdOfSubtask());
         subTasksList.put(newSubTask.getTaskId(), newSubTask);
-        epicsList.get(newSubTask.getEpicIdOfSubtask()).addSubtaskToEpic(newSubTask.getTaskId());
-        epicsList.get(newSubTask.getEpicIdOfSubtask()).setEpicStatus(subTasksList);
+        epicsList.get(newSubTask.getEpicIdOfSubtask()).addSubtaskToEpic(newSubTask);
+        epicsList.get(newSubTask.getEpicIdOfSubtask()).setEpicStatus();
         return newSubTask.getTaskId();
 
     }
@@ -78,8 +79,8 @@ public class InMemoryTasksManager implements TaskManager {
     public int convertTaskToSubtask(Task task, int epicId){
         Subtask newSubTask = new Subtask(task, epicId);
         subTasksList.put(newSubTask.getTaskId(), newSubTask);
-        epicsList.get(epicId).addSubtaskToEpic(newSubTask.getTaskId());
-        epicsList.get(epicId).setEpicStatus(subTasksList);
+        epicsList.get(epicId).addSubtaskToEpic(newSubTask);
+        epicsList.get(epicId).setEpicStatus();
         return newSubTask.getTaskId();
 
     }
@@ -183,6 +184,16 @@ public class InMemoryTasksManager implements TaskManager {
            history.add((epicsList.get(taskId)));
         }
 
+    }
+
+    public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus){
+        if (getTask(subtaskId).hasEpicOrNo()) {
+            getTask(subtaskId).setStatus(taskStatus);
+            Subtask subtask = (Subtask) getTask(subtaskId);
+            epicsList.get(subtask.getEpicIdOfSubtask()).setEpicStatus();
+
+
+        }
     }
 
 

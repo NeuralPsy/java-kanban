@@ -13,11 +13,13 @@ public class Epic extends Task {
     public Epic(String epicName, int epicId, String epicDescription) {
         super(epicName, epicId, epicDescription);
         this.type = TaskTypes.EPIC;
+        this.status = TaskStatus.EMPTY_EPIC;
     }
 
     public Epic(Epic epic) {
         super(new Epic(epic));
         this.type = TaskTypes.EPIC;
+        this.status = TaskStatus.EMPTY_EPIC;
     }
     public ArrayList<Integer> getSubTasksInEpic() {
         return new ArrayList<>(subTasksInEpic);
@@ -27,8 +29,9 @@ public class Epic extends Task {
         this.subTasksInEpic = subTasksInEpic;
     }
 
-    public void addSubtaskToEpic(int subtaskId){
-        subTasksInEpic.add(subtaskId);
+    public void addSubtaskToEpic(Subtask subtask){
+        subTasksInEpic.add(subtask.getTaskId());
+        subTasksList.put(subtask.getTaskId(), subtask);
     }
 
 
@@ -39,18 +42,23 @@ public class Epic extends Task {
 
     }
 
-    public void setEpicStatus(HashMap<Integer, Subtask> subtask){
+    public void setEpicStatus(){
         ArrayList<TaskStatus> statuses = new ArrayList<>();
 
         for (int taskId: subTasksInEpic) {
-            TaskStatus status1 = TaskStatus.valueOf(subtask.get(taskId).getStatusAsString());
-            statuses.add(status1);
+            TaskStatus status = subTasksList.get(taskId).getStatus();
+            statuses.add(status);
         }
+        boolean isNew = !statuses.contains(TaskStatus.DONE)
+                && !statuses.contains(TaskStatus.IN_PROGRESS);
 
-        boolean isDone = !statuses.contains(TaskStatus.NEW) && !statuses.contains(TaskStatus.IN_PROGRESS);
+        boolean isDone = !statuses.contains(TaskStatus.NEW)
+                && !statuses.contains(TaskStatus.IN_PROGRESS)
+                && !statuses.contains(TaskStatus.EMPTY_EPIC);
         boolean isInProgress = statuses.contains(TaskStatus.IN_PROGRESS)
                 || (statuses.contains(TaskStatus.DONE) && statuses.contains(TaskStatus.NEW));
 
+        if (isNew) this.status = TaskStatus.NEW;
         if (isDone) this.status = TaskStatus.DONE;
         if (isInProgress) this.status = TaskStatus.IN_PROGRESS;
 

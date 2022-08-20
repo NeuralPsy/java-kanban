@@ -85,12 +85,12 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
         if (taskArray[1].equals("TASK")){
             task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            task.setStatus(taskArray[3]);
+            task.setStatus(TaskStatus.valueOf(taskArray[3]));
             addTaskToMap(task);
         }
         if (taskArray[1].equals("EPIC")){
             task = new Epic(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            task.setStatus(taskArray[3]);
+            task.setStatus(TaskStatus.valueOf(taskArray[3]));
 
             addTaskToMap(task);
         }
@@ -98,7 +98,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             task = new Subtask(taskArray[2], Integer.parseInt(taskArray[0]),
                     taskArray[4], Integer.parseInt(taskArray[5]));
 
-            task.setStatus(taskArray[3]);
+            task.setStatus(TaskStatus.valueOf(taskArray[3]));
             addTaskToMap(task);
         }
 

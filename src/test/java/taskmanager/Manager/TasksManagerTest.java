@@ -113,13 +113,17 @@ abstract class TasksManagerTest<T extends TaskManager> {
         int epicId = taskManager.addEpic("Эпик", "Это эпик для проверки изменения его статуса " +
                 "при добавлении или изменении его подзадач");
         assertEquals(TaskStatus.EMPTY_EPIC, taskManager.getTask(epicId).getStatus());
+
         int subtask1Id = taskManager.addSubTask("Подзадача №1", "Без описания", epicId);
         int subtask2Id = taskManager.addSubTask("Подзадача №2", "Без описания", epicId);
         assertEquals(TaskStatus.NEW, taskManager.getTask(epicId).getStatus());
+
         taskManager.setSubtaskStatus(subtask1Id, TaskStatus.DONE);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getTask(epicId).getStatus());
+
         taskManager.setSubtaskStatus(subtask2Id, TaskStatus.DONE);
         assertEquals(TaskStatus.DONE, taskManager.getTask(epicId).getStatus());
+
         taskManager.setSubtaskStatus(subtask1Id, TaskStatus.IN_PROGRESS);
         taskManager.setSubtaskStatus(subtask2Id, TaskStatus.IN_PROGRESS);
         assertEquals(TaskStatus.IN_PROGRESS, taskManager.getTask(epicId).getStatus());

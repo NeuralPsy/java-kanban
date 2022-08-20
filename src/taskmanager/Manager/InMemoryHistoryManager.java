@@ -50,7 +50,10 @@ public class InMemoryHistoryManager implements HistoryManager {
        String listString = "";
 
        for(int x = 0; x < history.getTaskIdList().size(); x++){
-           if (x == getHistory().size()-1) listString += history.getTaskIdList().get(x);
+           if (x == getHistory().size()-1) {
+               listString += history.getTaskIdList().get(x);
+               break;
+           }
            listString += history.getTaskIdList().get(x)+",";
        }
 

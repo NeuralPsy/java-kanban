@@ -20,11 +20,11 @@ public class InMemoryTasksManager implements TaskManager {
         String taskClass = task.getType().name();
 
         switch (taskClass){
-            case "TASK" : tasksList.put(task.getTaskId(), task);
+            case "TASK" : tasksList.put(task.getId(), task);
                 break;
-            case "EPIC" :  epicsList.put(task.getTaskId(), (Epic) task);
+            case "EPIC" :  epicsList.put(task.getId(), (Epic) task);
                 break;
-            case "SUBTASK" : subTasksList.put(task.getTaskId(), (Subtask) task);
+            case "SUBTASK" : subTasksList.put(task.getId(), (Subtask) task);
                 break;
         }
 
@@ -39,9 +39,9 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     public int addTask(Task task){
-        Task newTask = new Task(task.getTaskName(), task.getTaskId(), task.getDescription());
-        tasksList.put(newTask.getTaskId(), newTask);
-        return newTask.getTaskId();
+        Task newTask = new Task(task.getName(), task.getId(), task.getDescription());
+        tasksList.put(newTask.getId(), newTask);
+        return newTask.getId();
     }
 
     @Override
@@ -67,21 +67,21 @@ public class InMemoryTasksManager implements TaskManager {
 
     @Override
     public int addSubTask(Subtask subtask){
-        Subtask newSubTask = new Subtask(subtask.getTaskName(), subtask.getTaskId(),
+        Subtask newSubTask = new Subtask(subtask.getName(), subtask.getId(),
                 subtask.getDescription(), subtask.getEpicIdOfSubtask());
-        subTasksList.put(newSubTask.getTaskId(), newSubTask);
+        subTasksList.put(newSubTask.getId(), newSubTask);
         epicsList.get(newSubTask.getEpicIdOfSubtask()).addSubtaskToEpic(newSubTask);
         epicsList.get(newSubTask.getEpicIdOfSubtask()).setEpicStatus();
-        return newSubTask.getTaskId();
+        return newSubTask.getId();
 
     }
 
     public int convertTaskToSubtask(Task task, int epicId){
         Subtask newSubTask = new Subtask(task, epicId);
-        subTasksList.put(newSubTask.getTaskId(), newSubTask);
+        subTasksList.put(newSubTask.getId(), newSubTask);
         epicsList.get(epicId).addSubtaskToEpic(newSubTask);
         epicsList.get(epicId).setEpicStatus();
-        return newSubTask.getTaskId();
+        return newSubTask.getId();
 
     }
 
@@ -94,8 +94,8 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     public int addEpic(Epic epic){
-        epicsList.put(epic.getTaskId(), epic);
-        return epic.getTaskId();
+        epicsList.put(epic.getId(), epic);
+        return epic.getId();
     }
 
     @Override

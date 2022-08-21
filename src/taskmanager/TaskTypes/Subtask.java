@@ -13,7 +13,7 @@ public class Subtask extends Task {
     }
 
     public Subtask(Task task, int epicId) {
-        super(task.getTaskName(), task.getTaskId(), task.getDescription());
+        super(task.getName(), task.getId(), task.getDescription());
         this.epicId = epicId;
         this.status = TaskStatus.NEW;
         this.type = TaskTypes.SUBTASK;
@@ -21,7 +21,7 @@ public class Subtask extends Task {
     }
 
     public Subtask(Subtask subtask) {
-        super(subtask.getTaskName(), subtask.getTaskId(), subtask.getDescription());
+        super(subtask.getName(), subtask.getId(), subtask.getDescription());
         this.epicId = subtask.getEpicIdOfSubtask();
         this.status = TaskStatus.NEW;
         this.type = TaskTypes.SUBTASK;

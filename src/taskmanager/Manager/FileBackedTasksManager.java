@@ -58,9 +58,9 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
         // id,type,name,status,description,epic
 
-        String taskString = task.getTaskId()+","+
+        String taskString = task.getId()+","+
                     taskType+","+
-                    task.getTaskName()+","+
+                    task.getName()+","+
                     task.getStatusAsString()+","+
                     task.getDescription()+",";
 
@@ -96,7 +96,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             addTaskToMap(task);
         }
 
-        if (task.getTaskId() > newTaskId) newTaskId = task.getTaskId();
+        if (task.getId() > newTaskId) newTaskId = task.getId();
 
         return task;
 

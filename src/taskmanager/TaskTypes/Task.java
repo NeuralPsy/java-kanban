@@ -23,6 +23,10 @@ public class Task {
         this.endTime = startTime.plusMinutes(duration.toMinutes());
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -42,11 +46,11 @@ public class Task {
         return description;
     }
 
-    public int getTaskId() {
+    public int getId() {
         return taskId;
     }
 
-    public String getTaskName() {
+    public String getName() {
         return taskName;
     }
 
@@ -77,9 +81,9 @@ public class Task {
     }
 
     public Task(Task task){
-        this.taskName = task.getTaskName();
+        this.taskName = task.getName();
         this.status = task.getStatus();
-        this.taskId = task.getTaskId();
+        this.taskId = task.getId();
         this.description = task.getDescription();
 
     }
@@ -108,7 +112,8 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return taskId == task.taskId && Objects.equals(taskName, task.taskName) && Objects.equals(description, task.description) && status == task.status && type == task.type;
+        return taskId == task.taskId && Objects.equals(taskName, task.taskName)
+                && Objects.equals(description, task.description) && status == task.status && type == task.type;
     }
 
     @Override

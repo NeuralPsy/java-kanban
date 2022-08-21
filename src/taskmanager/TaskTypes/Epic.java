@@ -1,8 +1,11 @@
 package taskmanager.TaskTypes;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Epic extends Task {
 
@@ -21,6 +24,15 @@ public class Epic extends Task {
         this.type = TaskTypes.EPIC;
         this.status = TaskStatus.EMPTY_EPIC;
     }
+
+
+    public void setTime(LocalDate date, LocalTime time){
+        this.startTime = LocalDateTime.of(date, time);
+        this.duration = subTasksList.values()
+                .stream().map(c -> c.getDuration())
+                .reduce(Duration.ZERO, Duration::plus);
+    }
+
     public ArrayList<Integer> getSubTasksInEpic() {
         return new ArrayList<>(subTasksInEpic);
     }
@@ -30,8 +42,8 @@ public class Epic extends Task {
     }
 
     public void addSubtaskToEpic(Subtask subtask){
-        subTasksInEpic.add(subtask.getTaskId());
-        subTasksList.put(subtask.getTaskId(), subtask);
+        subTasksInEpic.add(subtask.getId());
+        subTasksList.put(subtask.getId(), subtask);
     }
 
 

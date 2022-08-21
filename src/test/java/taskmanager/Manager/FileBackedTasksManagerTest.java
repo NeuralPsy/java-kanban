@@ -2,20 +2,13 @@ package taskmanager.Manager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import taskmanager.Manager.Exceptions.ManagerSaveException;
 import taskmanager.TaskTypes.*;
 
-import javax.imageio.IIOException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager> {
 
@@ -31,7 +24,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         // id,type,name,status,description,epic
         String expected1 = taskId
                 +","+taskManager.getTask(taskId).getType()
-                +","+taskManager.getTask(taskId).getTaskName()
+                +","+taskManager.getTask(taskId).getName()
                 +","+taskManager.getTask(taskId).getStatusAsString()
                 +","+taskManager.getTask(taskId).getDescription()+",";
         String realString = taskManager.convertTaskToString(taskManager.getTask(taskId));
@@ -44,7 +37,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         // id,type,name,status,description,epic
         String expected = epicId
                 +","+taskManager.getTask(epicId).getType()
-                +","+taskManager.getTask(epicId).getTaskName()
+                +","+taskManager.getTask(epicId).getName()
                 +","+taskManager.getTask(epicId).getStatusAsString()
                 +","+taskManager.getTask(epicId).getDescription()+",";
         String realString = taskManager.convertTaskToString(taskManager.getTask(epicId));
@@ -58,7 +51,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         // id,type,name,status,description,epic
         String expected1 = subtaskId
                 +","+taskManager.getTask(subtaskId).getType()
-                +","+taskManager.getTask(subtaskId).getTaskName()
+                +","+taskManager.getTask(subtaskId).getName()
                 +","+taskManager.getTask(subtaskId).getStatusAsString()
                 +","+taskManager.getTask(subtaskId).getDescription()
                 +","+epicId;

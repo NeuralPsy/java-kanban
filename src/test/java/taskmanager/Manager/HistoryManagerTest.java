@@ -121,12 +121,12 @@ class HistoryManagerTest {
         historyManager.add(epic1);
         historyManager.add(epic2);
 
-        String expectation = task.getTaskId()+","
-                + task2.getTaskId()
-                +","+ task3.getTaskId()
-                +","+ task4.getTaskId()
-                +","+ epic1.getTaskId()
-                +","+ epic2.getTaskId();
+        String expectation = task.getId()+","
+                + task2.getId()
+                +","+ task3.getId()
+                +","+ task4.getId()
+                +","+ epic1.getId()
+                +","+ epic2.getId();
 
         String reality = historyManager.getStringHistory();
 

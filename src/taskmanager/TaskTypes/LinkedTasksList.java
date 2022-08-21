@@ -81,7 +81,7 @@ public class LinkedTasksList {
             tailNode.setNext(newNode);
         }
         size++;
-        taskIdMap.put(task.getTaskId(), task);
+        taskIdMap.put(task.getId(), task);
     }
 
 
@@ -96,7 +96,7 @@ public class LinkedTasksList {
         else
             next.prev = null;
         size--;
-        taskIdMap.remove(firstNode.getTask().getTaskId());
+        taskIdMap.remove(firstNode.getTask().getId());
     }
 
     void unlink(Node x) {
@@ -127,14 +127,14 @@ public class LinkedTasksList {
             for (Node x = head; x != null; x = x.next) {
                 if (x.getTask() == null) {
                     unlink(x);
-                    taskIdMap.remove(task.getTaskId());
+                    taskIdMap.remove(task.getId());
                 }
             }
         } else {
             for (Node x = head; x != null; x = x.next) {
-                if (x.getTask().getTaskId() == task.getTaskId()) {
+                if (x.getTask().getId() == task.getId()) {
                     unlink(x);
-                    taskIdMap.remove(task.getTaskId());
+                    taskIdMap.remove(task.getId());
                 }
 
             }
@@ -143,7 +143,7 @@ public class LinkedTasksList {
 
 
     public boolean containsTask(Task task){
-        return taskIdMap.containsKey(task.getTaskId());
+        return taskIdMap.containsKey(task.getId());
     }
 
     public int size() {

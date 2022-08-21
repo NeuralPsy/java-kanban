@@ -1,14 +1,12 @@
 package taskmanager.Manager;
 
+import taskmanager.Manager.Exceptions.TasksIntersectionException;
 import taskmanager.TaskTypes.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -19,6 +17,7 @@ public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
     private final InMemoryHistoryManager history = new InMemoryHistoryManager();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private TreeMap<LocalDateTime, LocalDateTime> busyTimeSchedule = new TreeMap<>();
 
     public DateTimeFormatter getFormatter() {
         return formatter;
@@ -210,17 +209,28 @@ public class InMemoryTasksManager implements TaskManager {
 
 
     @Override
-    public TreeSet<Task> getPrioritizedTasks(HashMap tasks) {
+    public TreeSet<Task> getPrioritizedTasks() {
         Comparator<Task> byDateTime = Comparator.comparing(Task::getStartTime);
-        Stream<Task> stream = tasks.values()
+        Stream<Task> tasks = tasksList.values()
                 .stream()
                 .sorted(byDateTime);
+        Stream<Task> subTasks = tasksList.values()
+                .stream()
+                .sorted(byDateTime);
+        ArrayList<Task> fullList = new ArrayList<>(tasks.collect(toList()));
+        fullList.addAll(subTasks.collect(toList()));
 
-        return new TreeSet<>(stream.collect(toList()));
+        return new TreeSet<>(fullList);
     }
 
-    public void setTime(Task task, LocalDateTime startTime, Duration duration) {
-        task.setStartTime(startTime);
+    public void setTime(Task task, LocalDateTime startDateTime, Duration duration) {
+        boolean isInvalidTime = busyTimeSchedule.keySet()
+                .stream()
+                .anyMatch(time -> time.isBefore(startDateTime)
+                && busyTimeSchedule.get(time).isAfter(startDateTime));
+        if (isInvalidTime) throw new TasksIntersectionException("Это время уже занято другой задачей");
+
+        task.setStartTime(startDateTime);
         if (task.getType() == TaskTypes.EPIC) {
             Duration duration1 = subTasksList.values()
                     .stream().map(subtask -> subtask.getDuration())

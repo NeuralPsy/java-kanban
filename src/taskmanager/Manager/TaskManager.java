@@ -1,5 +1,6 @@
 package taskmanager.Manager;
 
+import com.sun.source.tree.Tree;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
@@ -7,6 +8,7 @@ import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -42,5 +44,5 @@ public interface TaskManager {
 
     public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus);
 
-    ArrayList<Task> getPrioritizedTasks(HashMap tasks);
+    TreeSet<Task> getPrioritizedTasks(HashMap tasks);
 }

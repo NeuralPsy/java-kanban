@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -209,15 +210,13 @@ public class InMemoryTasksManager implements TaskManager {
 
 
     @Override
-    public ArrayList<Task> getPrioritizedTasks(HashMap tasks) {
+    public TreeSet<Task> getPrioritizedTasks(HashMap tasks) {
         Comparator<Task> byDateTime = Comparator.comparing(Task::getStartTime);
         Stream<Task> stream = tasks.values()
                 .stream()
                 .sorted(byDateTime);
 
-        ArrayList<Task> sortedTasks = new ArrayList<>(stream.collect(toList())) ;
-
-        return sortedTasks;
+        return new TreeSet<>(stream.collect(toList()));
     }
 
     public void setTime(Task task, LocalDateTime startTime, Duration duration) {

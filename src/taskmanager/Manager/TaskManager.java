@@ -6,6 +6,7 @@ import taskmanager.TaskTypes.Task;
 import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface TaskManager {
 
@@ -41,4 +42,5 @@ public interface TaskManager {
 
     public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus);
 
+    ArrayList<Task> getPrioritizedTasks(HashMap tasks);
 }

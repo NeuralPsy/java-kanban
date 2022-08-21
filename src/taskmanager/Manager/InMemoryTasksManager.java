@@ -6,7 +6,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Task> tasksList = new HashMap<>();
@@ -202,6 +206,20 @@ public class InMemoryTasksManager implements TaskManager {
 
         }
     }
+
+
+    @Override
+    public ArrayList<Task> getPrioritizedTasks(HashMap tasks) {
+        Comparator<Task> byDateTime = Comparator.comparing(Task::getStartTime);
+        Stream<Task> stream = tasks.values()
+                .stream()
+                .sorted(byDateTime);
+
+        ArrayList<Task> sortedTasks = new ArrayList<>(stream.collect(toList())) ;
+
+        return sortedTasks;
+    }
+
     public void setTime(Task task, LocalDateTime startTime, Duration duration) {
         task.setStartTime(startTime);
         if (task.getType() == TaskTypes.EPIC) {

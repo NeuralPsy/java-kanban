@@ -1,10 +1,10 @@
 package taskmanager.Manager;
 
-import taskmanager.TaskTypes.Epic;
-import taskmanager.TaskTypes.Subtask;
-import taskmanager.TaskTypes.Task;
-import taskmanager.TaskTypes.TaskStatus;
+import taskmanager.TaskTypes.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +12,14 @@ public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Task> tasksList = new HashMap<>();
     private HashMap<Integer, Subtask> subTasksList = new HashMap<>();
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
-    private InMemoryHistoryManager history = new InMemoryHistoryManager();
+    private final InMemoryHistoryManager history = new InMemoryHistoryManager();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+
 
     private static int newTaskId = 0;
 
@@ -194,6 +201,21 @@ public class InMemoryTasksManager implements TaskManager {
 
 
         }
+    }
+    public void setTime(Task task, LocalDateTime startTime, Duration duration) {
+        task.setStartTime(startTime);
+        if (task.getType() == TaskTypes.EPIC) {
+            Duration duration1 = subTasksList.values()
+                    .stream().map(subtask -> subtask.getDuration())
+                    .reduce(Duration.ZERO, Duration::plus);
+            task.setDuration(duration1);
+            task.setEndTime(task.getStartTime().plusMinutes(duration.toMinutes()));
+            return;
+        }
+        task.setDuration(Duration.ofMinutes(duration.toMinutes()));
+        task.setEndTime(task.getStartTime().plusMinutes(duration.toMinutes()));
+
+
     }
 
 

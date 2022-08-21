@@ -16,11 +16,16 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
 
-    public void setTime(LocalDate date, LocalTime time, Duration duration) {
-        this.startTime = LocalDateTime.of(date, time);
-        this.duration = Duration.ofMinutes(duration.toMinutes());
-        this.endTime = startTime.plusMinutes(duration.toMinutes());
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public Duration getDuration() {
@@ -113,11 +118,16 @@ public class Task {
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
         return taskId == task.taskId && Objects.equals(taskName, task.taskName)
-                && Objects.equals(description, task.description) && status == task.status && type == task.type;
+                && Objects.equals(description, task.description) && status == task.status && type == task.type
+                && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskName, description, taskId, status, type);
+        return Objects.hash(taskName, description, taskId, status, type, hasEpic, duration, startTime, endTime);
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 }

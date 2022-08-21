@@ -26,11 +26,12 @@ public class Epic extends Task {
     }
 
 
-    public void setTime(LocalDate date, LocalTime time){
-        this.startTime = LocalDateTime.of(date, time);
+    public void setTime(LocalDateTime dateTime){
+        this.startTime = dateTime;
         this.duration = subTasksList.values()
-                .stream().map(c -> c.getDuration())
+                .stream().map(subtask -> subtask.getDuration())
                 .reduce(Duration.ZERO, Duration::plus);
+        this.endTime = startTime.plusMinutes(duration.toMinutes());
     }
 
     public ArrayList<Integer> getSubTasksInEpic() {

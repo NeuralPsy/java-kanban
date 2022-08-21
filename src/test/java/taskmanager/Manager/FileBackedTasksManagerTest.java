@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.*;
 
 class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager> {
 
@@ -21,25 +22,41 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     @Test
     void shouldConvertTaskToString() {
         int taskId = taskManager.addTask("Задача", "Без описания");
-        // id,type,name,status,description,epic
-        String expected1 = taskId
+        // id,type,name,status,description, + startTime,duration,endTime,epic
+        LocalDateTime dateTime = LocalDateTime.now();
+        Duration duration = Duration.ofDays(1);
+        taskManager.setTime(taskManager.getTask(taskId),dateTime, duration);
+
+        String expectation = taskId
                 +","+taskManager.getTask(taskId).getType()
                 +","+taskManager.getTask(taskId).getName()
                 +","+taskManager.getTask(taskId).getStatusAsString()
-                +","+taskManager.getTask(taskId).getDescription()+",";
-        String realString = taskManager.convertTaskToString(taskManager.getTask(taskId));
-        assertEquals(expected1, realString);
+                +","+taskManager.getTask(taskId).getDescription()
+                +","+taskManager.getTask(taskId).getStartTime().format(taskManager.getFormatter())
+                +","+taskManager.getTask(taskId).getDuration()
+                +","+taskManager.getTask(taskId).getEndTime().format(taskManager.getFormatter())+",";
+
+        String reality = taskManager.convertTaskToString(taskManager.getTask(taskId));
+        assertEquals(expectation, reality);
     }
 
     @Test
     void shouldConvertEpicToString() {
         int epicId = taskManager.addEpic("Эпик", "Без описания");
-        // id,type,name,status,description,epic
+        /// id,type,name,status,description, + startTime,duration,endTime,epic
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        Duration duration = Duration.ofMinutes(570);
+        taskManager.setTime(taskManager.getTask(epicId), dateTime, duration);
+
         String expected = epicId
                 +","+taskManager.getTask(epicId).getType()
                 +","+taskManager.getTask(epicId).getName()
                 +","+taskManager.getTask(epicId).getStatusAsString()
-                +","+taskManager.getTask(epicId).getDescription()+",";
+                +","+taskManager.getTask(epicId).getDescription()
+                +","+taskManager.getTask(epicId).getStartTime().format(taskManager.getFormatter())
+                +","+taskManager.getTask(epicId).getDuration()
+                +","+taskManager.getTask(epicId).getEndTime().format(taskManager.getFormatter())+",";
         String realString = taskManager.convertTaskToString(taskManager.getTask(epicId));
         assertEquals(expected, realString);
     }
@@ -48,12 +65,18 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     void shouldConvertSubtaskToString() {
         int epicId = taskManager.addEpic("Эпик", "Без описания");
         int subtaskId = taskManager.addSubTask("Подзадача", "Без описания", epicId);
-        // id,type,name,status,description,epic
+        // id,type,name,status,description, + startTime,duration,endTime,epic
+        LocalDateTime dateTime = LocalDateTime.now();
+        Duration duration = Duration.ofMinutes(570);
+        taskManager.setTime(taskManager.getTask(subtaskId), dateTime, duration);
         String expected1 = subtaskId
                 +","+taskManager.getTask(subtaskId).getType()
                 +","+taskManager.getTask(subtaskId).getName()
                 +","+taskManager.getTask(subtaskId).getStatusAsString()
                 +","+taskManager.getTask(subtaskId).getDescription()
+                +","+taskManager.getTask(subtaskId).getStartTime().format(taskManager.getFormatter())
+                +","+taskManager.getTask(subtaskId).getDuration()
+                +","+taskManager.getTask(subtaskId).getEndTime().format(taskManager.getFormatter())
                 +","+epicId;
         String realString = taskManager.convertTaskToString(taskManager.getTask(subtaskId));
         assertEquals(expected1, realString);
@@ -62,9 +85,21 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     @Test
     void shouldConvertStringToTask() {
         int taskId = taskManager.addTask("Задача", "Без описания");
-        Task task = taskManager.getTask(taskId);
-        String stringTask = taskManager.convertTaskToString(task);
-        assertEquals(taskManager.getTask(taskId), taskManager.fromString(stringTask));
+        LocalDateTime dateTime = LocalDateTime.now();
+        Duration duration = Duration.ofDays(1);
+        taskManager.setTime(taskManager.getTask(taskId), dateTime, duration);
+
+        String stringTask = taskManager.convertTaskToString(taskManager.getTask(taskId));
+
+        Task task = new Task(taskManager.getTask(taskId));
+        taskManager.setTime(task, dateTime, duration);
+
+        assertEquals(TaskTypes.TASK, taskManager.fromString(stringTask).getType());
+        assertEquals(task.getId(), taskManager.fromString(stringTask).getId());
+        assertEquals(task.getStartTime().format(taskManager.getFormatter()),
+                taskManager.fromString(stringTask).getStartTime().format(taskManager.getFormatter()));
+        assertEquals(task.getEndTime().format(taskManager.getFormatter()),
+                taskManager.fromString(stringTask).getEndTime().format(taskManager.getFormatter()));
     }
 
 
@@ -74,36 +109,51 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         taskManager.save();
         Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
         String fileAsString = Files.readString(path);
-        assertEquals("HISTORY:", fileAsString, "Пустой файл сохранен неверно");
+        assertEquals("HISTORY ", fileAsString, "Пустой файл сохранен неверно");
     }
 
     @Test
     void shouldSaveToFileWhenSomeTasksAreAdded() throws IOException {
         Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
         String fileAsString = Files.readString(path);
-        assertEquals("HISTORY:", fileAsString, "Пустой файл сохранен неверно");
+        assertEquals("HISTORY ", fileAsString, "Пустой файл сохранен неверно");
 
         int taskId1 = taskManager.addTask("Задача", "Без названия");
+        LocalDateTime dateTime = LocalDateTime.now();
+        Duration duration = Duration.ofDays(1);
+        taskManager.setTime(taskManager.getTask(taskId1), dateTime, duration);
+
+        String string1 = taskManager.convertTaskToString(taskManager.getTask(taskId1))+"\n";
         taskManager.save();
         fileAsString = Files.readString(path);
-        String expectation = "32,TASK,Задача,NEW,Без названия,\nHISTORY:";
+        String expectation = string1+"HISTORY 32,";
         assertEquals(expectation, fileAsString, "Содержимое файла не соответствует ожидаемому " +
                 "после добавление новой задачи");
+
         int taskId2 = taskManager.addTask("Задача", "Без названия");
-        taskManager.getTask(taskId1).setStatus(TaskStatus.IN_PROGRESS);
+        taskManager.getTask(taskId2).setStatus(TaskStatus.IN_PROGRESS);
+        dateTime = LocalDateTime.now();
+        duration = Duration.ofDays(1);
+        taskManager.setTime(taskManager.getTask(taskId2), dateTime, duration);
+        String string2 = taskManager.convertTaskToString(taskManager.getTask(taskId2))+"\n";
 
         int epicId = taskManager.addEpic("Эпик", "Без названия");
-        int subtaskId = taskManager.addSubTask("Подзадача", "Без названия", epicId);
+        int subtaskId1 = taskManager.addSubTask("Подзадача", "Без названия", epicId);
+        int subtaskId2 = taskManager.addSubTask("Подзадача", "Без названия", epicId);
+        dateTime = LocalDateTime.now();
+        duration = Duration.ofDays(1);
+        taskManager.setTime(taskManager.getTask(subtaskId1), dateTime, duration);
+        taskManager.setTime(taskManager.getTask(subtaskId2), dateTime, duration);
+        taskManager.setTime(taskManager.getTask(epicId), dateTime, duration);
+        String string3 = taskManager.convertTaskToString(taskManager.getTask(epicId))+"\n";
+        String string4 = taskManager.convertTaskToString(taskManager.getTask(subtaskId1))+"\n";
+        String string5 = taskManager.convertTaskToString(taskManager.getTask(subtaskId2))+"\n";
         taskManager.save();
 
         fileAsString = Files.readString(path);
 
 
-        expectation = "32,TASK,Задача,IN_PROGRESS,Без названия,\n" +
-                "33,TASK,Задача,NEW,Без названия,\n" +
-                "35,SUBTASK,Подзадача,NEW,Без названия,34\n" +
-                "34,EPIC,Эпик,NEW,Без названия,\n" +
-                "HISTORY:32,";
+        expectation = string1+string2+string4+string5+string3+"HISTORY 32,33,34,35,36,";
         assertEquals(expectation, fileAsString, "Содержимое файла не соответствует ожидаемому " +
                 "после добавление новой задачи, эпика, подзадачи и просмотра одной задачи");
 

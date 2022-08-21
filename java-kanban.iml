@@ -25,6 +25,7 @@
         <SOURCES>
           <root url="jar://$USER_HOME$/.ideaLibSources/junit-jupiter-api-5.8.1-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ideaLibSources/junit-jupiter-api-5.8.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ideaLibSources/junit-platform-commons-1.8.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

@@ -8,6 +8,9 @@ import taskmanager.TaskTypes.Task;
 import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -234,5 +237,17 @@ abstract class TasksManagerTest<T extends TaskManager> {
                 "возвращающего id эпика из его подзадачи", epicId);
         Subtask subtask = (Subtask) taskManager.getTask(subtaskId);
         assertEquals(epicId, subtask.getEpicIdOfSubtask(), "Id эпика не возвращается из под задачи");
+    }
+
+        @Test
+    void shouldReturnSortedByDateTasksList(){
+        Comparator<Task> byDate = Comparator.comparing(Task::getStartTime);
+        String reality = taskManager.getPrioritizedTasks().toString();
+        taskManager.getBusyTimeSchedule().sort(byDate);
+
+        String expectation = taskManager.getPrioritizedTasks().toString();
+
+        assertEquals(expectation, reality);
+
     }
 }

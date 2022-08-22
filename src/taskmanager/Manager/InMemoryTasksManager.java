@@ -1,6 +1,5 @@
 package taskmanager.Manager;
 
-import taskmanager.Manager.Exceptions.TasksIntersectionException;
 import taskmanager.TaskTypes.*;
 
 import java.time.Duration;
@@ -17,7 +16,7 @@ public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
     private final InMemoryHistoryManager history = new InMemoryHistoryManager();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    private TreeMap<LocalDateTime, LocalDateTime> busyTimeSchedule = new TreeMap<>();
+    private ArrayList<Task> busyTimeSchedule = new ArrayList<>();
 
     public DateTimeFormatter getFormatter() {
         return formatter;
@@ -202,33 +201,34 @@ public class InMemoryTasksManager implements TaskManager {
             getTask(subtaskId).setStatus(taskStatus);
             Subtask subtask = (Subtask) getTask(subtaskId);
             epicsList.get(subtask.getEpicIdOfSubtask()).setEpicStatus();
-
-
         }
     }
 
 
+    public ArrayList<Task> getBusyTimeSchedule() {
+        return busyTimeSchedule;
+    }
+
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
         Comparator<Task> byDateTime = Comparator.comparing(Task::getStartTime);
-        Stream<Task> tasks = tasksList.values()
-                .stream()
-                .sorted(byDateTime);
-        Stream<Task> subTasks = tasksList.values()
-                .stream()
-                .sorted(byDateTime);
+        Stream<Task> tasks = tasksList.values().stream().sorted(byDateTime);
+        Stream<Subtask> subTasks = subTasksList.values().stream().sorted(byDateTime);
         ArrayList<Task> fullList = new ArrayList<>(tasks.collect(toList()));
         fullList.addAll(subTasks.collect(toList()));
 
-        return new TreeSet<>(fullList);
+        return new TreeSet(fullList);
     }
 
     public void setTime(Task task, LocalDateTime startDateTime, Duration duration) {
-        boolean isInvalidTime = busyTimeSchedule.keySet()
-                .stream()
-                .anyMatch(time -> time.isBefore(startDateTime)
-                && busyTimeSchedule.get(time).isAfter(startDateTime));
-        if (isInvalidTime) throw new TasksIntersectionException("Это время уже занято другой задачей");
+        boolean isInvalidTime = busyTimeSchedule.stream()
+                .anyMatch(time -> (time.getStartTime().isBefore(startDateTime) || time.getStartTime().equals(startDateTime))
+                        && time.getEndTime().isAfter(startDateTime));
+
+        if (isInvalidTime) {
+            System.out.println("Это время уже занято другой задачей");
+            return;
+        }
 
         task.setStartTime(startDateTime);
         if (task.getType() == TaskTypes.EPIC) {
@@ -237,10 +237,12 @@ public class InMemoryTasksManager implements TaskManager {
                     .reduce(Duration.ZERO, Duration::plus);
             task.setDuration(duration1);
             task.setEndTime(task.getStartTime().plusMinutes(duration.toMinutes()));
+            busyTimeSchedule.add(task);
             return;
         }
         task.setDuration(Duration.ofMinutes(duration.toMinutes()));
         task.setEndTime(task.getStartTime().plusMinutes(duration.toMinutes()));
+        busyTimeSchedule.add(task);
 
 
     }

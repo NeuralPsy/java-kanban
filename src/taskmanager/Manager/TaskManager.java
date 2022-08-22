@@ -45,4 +45,6 @@ public interface TaskManager {
     public void setSubtaskStatus(int subtaskId, TaskStatus taskStatus);
 
     TreeSet<Task> getPrioritizedTasks();
+
+    public ArrayList<Task> getBusyTimeSchedule();
 }

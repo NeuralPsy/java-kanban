@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.*;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager> {
 
@@ -85,21 +87,19 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     @Test
     void shouldConvertStringToTask() {
         int taskId = taskManager.addTask("Задача", "Без описания");
+
         LocalDateTime dateTime = LocalDateTime.now();
         Duration duration = Duration.ofDays(1);
         taskManager.setTime(taskManager.getTask(taskId), dateTime, duration);
 
         String stringTask = taskManager.convertTaskToString(taskManager.getTask(taskId));
+        String startTime = String.valueOf(taskManager.fromString(stringTask)
+                .getStartTime().format(taskManager.getFormatter()));
 
-        Task task = new Task(taskManager.getTask(taskId));
-        taskManager.setTime(task, dateTime, duration);
 
-        assertEquals(TaskTypes.TASK, taskManager.fromString(stringTask).getType());
-        assertEquals(task.getId(), taskManager.fromString(stringTask).getId());
-        assertEquals(task.getStartTime().format(taskManager.getFormatter()),
-                taskManager.fromString(stringTask).getStartTime().format(taskManager.getFormatter()));
-        assertEquals(task.getEndTime().format(taskManager.getFormatter()),
-                taskManager.fromString(stringTask).getEndTime().format(taskManager.getFormatter()));
+        assertEquals(TaskTypes.TASK, taskManager.getTask(taskId).getType());
+        assertEquals(taskId, taskManager.getTask(taskId).getId());
+        assertEquals(startTime,taskManager.getTask(taskId).getStartTime().format(taskManager.getFormatter()));
     }
 
 
@@ -122,29 +122,32 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         LocalDateTime dateTime = LocalDateTime.now();
         Duration duration = Duration.ofDays(1);
         taskManager.setTime(taskManager.getTask(taskId1), dateTime, duration);
-
         String string1 = taskManager.convertTaskToString(taskManager.getTask(taskId1))+"\n";
         taskManager.save();
         fileAsString = Files.readString(path);
-        String expectation = string1+"HISTORY 32,";
+        String expectation = string1+"HISTORY "+taskId1+",";
         assertEquals(expectation, fileAsString, "Содержимое файла не соответствует ожидаемому " +
-                "после добавление новой задачи");
+                "после добавления новой задачи");
 
         int taskId2 = taskManager.addTask("Задача", "Без названия");
         taskManager.getTask(taskId2).setStatus(TaskStatus.IN_PROGRESS);
-        dateTime = LocalDateTime.now();
-        duration = Duration.ofDays(1);
-        taskManager.setTime(taskManager.getTask(taskId2), dateTime, duration);
+        LocalDateTime dateTime2 = LocalDateTime.now().plusDays(3).plusHours(11);
+        taskManager.setTime(taskManager.getTask(taskId2), dateTime2, duration);
         String string2 = taskManager.convertTaskToString(taskManager.getTask(taskId2))+"\n";
 
         int epicId = taskManager.addEpic("Эпик", "Без названия");
         int subtaskId1 = taskManager.addSubTask("Подзадача", "Без названия", epicId);
         int subtaskId2 = taskManager.addSubTask("Подзадача", "Без названия", epicId);
-        dateTime = LocalDateTime.now();
-        duration = Duration.ofDays(1);
-        taskManager.setTime(taskManager.getTask(subtaskId1), dateTime, duration);
-        taskManager.setTime(taskManager.getTask(subtaskId2), dateTime, duration);
-        taskManager.setTime(taskManager.getTask(epicId), dateTime, duration);
+        LocalDateTime dateTime3 = LocalDateTime.now().plusDays(8);
+
+        taskManager.setTime(taskManager.getTask(subtaskId1), dateTime3, duration);
+        LocalDateTime dateTime4 = LocalDateTime.now().plusDays(13);
+
+        taskManager.setTime(taskManager.getTask(subtaskId2), dateTime4, duration);
+        LocalDateTime dateTime5 = LocalDateTime.now().plusDays(17);
+
+        taskManager.setTime(taskManager.getTask(epicId), dateTime5, duration);
+
         String string3 = taskManager.convertTaskToString(taskManager.getTask(epicId))+"\n";
         String string4 = taskManager.convertTaskToString(taskManager.getTask(subtaskId1))+"\n";
         String string5 = taskManager.convertTaskToString(taskManager.getTask(subtaskId2))+"\n";
@@ -169,8 +172,8 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         managerFromFile.save();
 
         String fileAsString2 = Files.readString(path);
-
         assertEquals(fileAsString1, fileAsString2);
 
     }
+
 }

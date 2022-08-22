@@ -156,7 +156,8 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         fileAsString = Files.readString(path);
 
 
-        expectation = string1+string2+string4+string5+string3+"HISTORY 32,33,34,35,36,";
+        expectation = string1+string2+string4+string5+string3+"HISTORY "+taskId1+","+ taskId2
+                +","+epicId+","+subtaskId1+","+subtaskId2+",";
         assertEquals(expectation, fileAsString, "Содержимое файла не соответствует ожидаемому " +
                 "после добавление новой задачи, эпика, подзадачи и просмотра одной задачи");
 
@@ -173,6 +174,26 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
 
         String fileAsString2 = Files.readString(path);
         assertEquals(fileAsString1, fileAsString2);
+
+    }
+    @Override
+    void shouldGetSubTasksList() {
+        int epic1Id = taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
+                "возвращающего список его подзадач");
+        int epic2Id = taskManager.addEpic("Эпик №2", "Это эпик для проверки метода, " +
+                "возвращающего список его подзадач");
+        int subtask1Id = taskManager.addSubTask("Подзадача №1 Эпика №1", "Эта задача для проверки метода, " +
+                "возвращающего список задач", epic1Id);
+        int subtask2Id = taskManager.addSubTask("Подзадача №2 Эпика №1", "Эта задача для проверки метода, " +
+                "возвращающего список задач", epic1Id);
+        int subtask3Id = taskManager.addSubTask("Подзадача №1 Эпика №2", "Эта задача для проверки метода, " +
+                "возвращающего список задач", epic2Id);
+        int subtask4Id = taskManager.addSubTask("Подзадача №2 Эпика №2", "Эта задача для проверки метода, " +
+                "возвращающего список задач", epic2Id);
+
+        Integer[] expectedSubtasksList = {subtask4Id, subtask1Id, subtask2Id,  subtask3Id};
+        Integer[] realSubtasksList = taskManager.getSubTasksList().toArray(new Integer[0]);
+        assertArrayEquals(expectedSubtasksList, realSubtasksList);
 
     }
 

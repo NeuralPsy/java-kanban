@@ -10,13 +10,12 @@ import taskmanager.TaskTypes.TaskStatus;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeSet;
-import java.util.stream.Stream;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TasksManagerTest<T extends TaskManager> {
-    protected T taskManager;
+    T taskManager;
 
     abstract public T createTaskManager();
 
@@ -74,7 +73,7 @@ abstract class TasksManagerTest<T extends TaskManager> {
         int subtask4Id = taskManager.addSubTask("Подзадача №2 Эпика №2", "Эта задача для проверки метода, " +
                 "возвращающего список задач", epic2Id);
 
-        Integer[] expectedSubtasksList = {subtask1Id, subtask2Id, subtask3Id, subtask4Id};
+        Integer[] expectedSubtasksList = {subtask1Id, subtask2Id,  subtask3Id, subtask4Id};
         Integer[] realSubtasksList = taskManager.getSubTasksList().toArray(new Integer[0]);
         assertArrayEquals(expectedSubtasksList, realSubtasksList);
 

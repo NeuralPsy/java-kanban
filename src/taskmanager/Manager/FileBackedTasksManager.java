@@ -96,29 +96,31 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
         // id,type,name,status,description, + startTime,duration,endTime,epic
 
-        if (taskArray[1].equals("TASK")){
-            task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            parseString(task, taskArray);
-            addTaskToMap(task);
-        }
-        if (taskArray[1].equals("EPIC")){
-            task = new Epic(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            parseString(task, taskArray);
+        try {
+            if (taskArray[1].equals("TASK")) {
+                task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
+                parseString(task, taskArray);
+                addTaskToMap(task);
+            }
+            if (taskArray[1].equals("EPIC")) {
+                task = new Epic(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
+                parseString(task, taskArray);
 
-            addTaskToMap(task);
-        }
-        if (taskArray[1].equals("SUBTASK")){
-            task = new Subtask(taskArray[2], Integer.parseInt(taskArray[0]),
-                    taskArray[4], Integer.parseInt(taskArray[8]));
+                addTaskToMap(task);
+            }
+            if (taskArray[1].equals("SUBTASK")) {
+                task = new Subtask(taskArray[2], Integer.parseInt(taskArray[0]),
+                        taskArray[4], Integer.parseInt(taskArray[8]));
+                parseString(task, taskArray);
 
-            parseString(task, taskArray);
+                addTaskToMap(task);
+            }
 
-            addTaskToMap(task);
-        }
+            if (task.getId() > newTaskId) newTaskId = task.getId();
 
-        if (task.getId() > newTaskId) newTaskId = task.getId();
-
-        return task;
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        } return task;
 
     }
 

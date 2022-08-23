@@ -37,7 +37,9 @@ public class Subtask extends Task {
     public String toString(){
         return "Название подзадачи: " + taskName+"\n"
                 +"ID подзадачи: " + taskId+"\n"
-                +"Статус подзадачи: " + status+"\n"
+                +"Дата начала: " + startTime+"\n"
+                +"Дата окончания: " + endTime+"\n"
+                +"Статус задачи: " + status+"\n"
                 +"Описание: " + description+"\n\n";
     }
 

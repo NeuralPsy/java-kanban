@@ -7,9 +7,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 
 public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Task> tasksList = new HashMap<>();
@@ -17,12 +15,11 @@ public class InMemoryTasksManager implements TaskManager {
     private HashMap<Integer, Epic> epicsList = new HashMap<>();
     private final InMemoryHistoryManager history = new InMemoryHistoryManager();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    private ArrayList<Task> busyTimeSchedule = new ArrayList<>();
+    private TreeSet<Task> busyTimeSchedule = new TreeSet<>();
 
     public DateTimeFormatter getFormatter() {
         return formatter;
     }
-
 
 
     private static int newTaskId = 0;
@@ -157,7 +154,7 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int newTaskId){ // Возвращает задачу по ID
+    public Task getTask(int newTaskId){
         Task taskToReturn = null;
         if (tasksList.containsKey(newTaskId)) {
             history.add(tasksList.get(newTaskId));
@@ -215,19 +212,13 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
 
-    public ArrayList<Task> getBusyTimeSchedule() {
+    public TreeSet<Task> getBusyTimeSchedule() {
         return busyTimeSchedule;
     }
 
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
-        Comparator<Task> byDateTime = Comparator.comparing(Task::getStartTime);
-        Stream<Task> tasks = tasksList.values().stream().sorted(byDateTime);
-        Stream<Subtask> subTasks = subTasksList.values().stream().sorted(byDateTime);
-        ArrayList<Task> fullList = new ArrayList<>(tasks.collect(toList()));
-        fullList.addAll(subTasks.collect(toList()));
-
-        return new TreeSet(fullList);
+        return new TreeSet(this.busyTimeSchedule);
     }
 
     public void setTime(Task task, LocalDateTime startDateTime, Duration duration) {
@@ -246,7 +237,7 @@ public class InMemoryTasksManager implements TaskManager {
                     .stream().map(subtask -> subtask.getDuration())
                     .reduce(Duration.ZERO, Duration::plus);
             task.setDuration(duration1);
-            task.setEndTime(task.getStartTime().plusMinutes(duration.toMinutes()));
+            task.setEndTime(task.getStartTime().plusMinutes(duration1.toMinutes()));
             busyTimeSchedule.add(task);
             return;
         }
@@ -256,6 +247,7 @@ public class InMemoryTasksManager implements TaskManager {
 
 
     }
+
 
 
 }

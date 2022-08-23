@@ -3,7 +3,7 @@ package taskmanager.TaskTypes;
 import java.time.*;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task> {
 
 
     protected String taskName;
@@ -108,6 +108,8 @@ public class Task {
     public String toString(){
         return "Название задачи: " + taskName+"\n"
                 +"ID задачи: " + taskId+"\n"
+                +"Дата начала: " + startTime+"\n"
+                +"Дата окончания: " + endTime+"\n"
                 +"Статус задачи: " + status+"\n"
                 +"Описание: " + description+"\n\n";
     }
@@ -129,6 +131,13 @@ public class Task {
 
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
+    }
+
+    @Override
+    public int compareTo(Task otherTask){
+        if(this.startTime.isAfter(otherTask.startTime)) return 1;
+        if (this.startTime.isBefore(otherTask.startTime)) return -1;
+        else return 0;
     }
 
 }

@@ -44,18 +44,18 @@ class HistoryManagerTest {
         Task task = new Task("Задача", 0, "Без названия");
         Task task2 = new Task("Задача", 1, "Без названия");
         historyManager.add(task);
-        ArrayList<Integer> history = historyManager.getHistory();
+        ArrayList<Integer> history = new ArrayList<>(historyManager.getHistory());
         assertEquals(0, history.get(0));
         assertEquals(1, history.size());
         historyManager.add(task2);
-        history = historyManager.getHistory();
+        history = new ArrayList<>(historyManager.getHistory());
         assertEquals(2, history.size());
     }
 
     @Test
     void getHistory() {
         setUp();
-        ArrayList<Integer> history = historyManager.getHistory();
+        ArrayList<Integer> history = new ArrayList<>(historyManager.getHistory());
         assertEquals(8, history.size());
 
         assertEquals("[0, 1, 2, 3, 4, 5, 6, 7]", history.toString());
@@ -96,7 +96,7 @@ class HistoryManagerTest {
         historyManager.add(subtask1);
         historyManager.add(subtask2);
 
-        ArrayList<Task> history = historyManager.getTasks();
+        ArrayList<Task> history = new ArrayList<>(historyManager.getTasks());
         assertEquals(task, historyManager.getTasks().get(0));
         assertEquals(task2, historyManager.getTasks().get(1));
         assertEquals(task3, historyManager.getTasks().get(2));

@@ -44,5 +44,5 @@ public interface TaskManager {
 
     TreeSet<Task> getPrioritizedTasks();
 
-    public ArrayList<Task> getBusyTimeSchedule();
+    public TreeSet<Task> getBusyTimeSchedule();
 }

@@ -81,10 +81,11 @@ public class Epic extends Task {
     public String toString(){
         return "Название эпика: " + taskName+"\n"
                 +"ID эпика: " + taskId+"\n"
+                +"Дата начала: " + startTime+"\n"
+                +"Дата окончания: " + endTime+"\n"
                 +"Статус эпика: " + status+"\n"
-                +"Описание: " + description+"\n"
-                +"Подзадачи эпика: " + subTasksInEpic+ "\n";
-
+                +"Подзадачи эпика: " + subTasksInEpic+"\n"
+                +"Описание: " + description+"\n\n";
     }
 
 }

@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.*;
-import java.util.Comparator;
-import java.util.TreeSet;
 
 class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager> {
 
@@ -143,7 +141,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         taskManager.setTime(taskManager.getTask(subtaskId1), dateTime3, duration);
         LocalDateTime dateTime4 = LocalDateTime.now().plusDays(13);
 
-        taskManager.setTime(taskManager.getTask(subtaskId2), dateTime4, duration);
+        taskManager.setTime(taskManager.getTask(subtaskId2), dateTime4, duration.plusMinutes(3000));
         LocalDateTime dateTime5 = LocalDateTime.now().plusDays(17);
 
         taskManager.setTime(taskManager.getTask(epicId), dateTime5, duration);
@@ -154,6 +152,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         taskManager.save();
 
         fileAsString = Files.readString(path);
+        System.out.println(taskManager.getPrioritizedTasks());
 
 
         expectation = string1+string2+string4+string5+string3+"HISTORY "+taskId1+","+ taskId2
@@ -196,5 +195,9 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         assertArrayEquals(expectedSubtasksList, realSubtasksList);
 
     }
+
+
+
+
 
 }

@@ -152,8 +152,6 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         taskManager.save();
 
         fileAsString = Files.readString(path);
-        System.out.println(taskManager.getPrioritizedTasks());
-
 
         expectation = string1+string2+string4+string5+string3+"HISTORY "+taskId1+","+ taskId2
                 +","+epicId+","+subtaskId1+","+subtaskId2+",";

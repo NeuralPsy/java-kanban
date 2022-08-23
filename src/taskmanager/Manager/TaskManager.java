@@ -1,14 +1,12 @@
 package taskmanager.Manager;
 
-import com.sun.source.tree.Tree;
+import java.util.TreeSet;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 import taskmanager.TaskTypes.TaskStatus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeSet;
 
 public interface TaskManager {
 

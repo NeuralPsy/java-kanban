@@ -123,21 +123,25 @@ public class LinkedTasksList {
 
 
     public void remove(Task task) {
-        if (task == null) {
-            for (Node x = head; x != null; x = x.next) {
-                if (x.getTask() == null) {
-                    unlink(x);
-                    taskIdMap.remove(task.getId());
+        try {
+            if (task == null) {
+                for (Node x = head; x != null; x = x.next) {
+                    if (x.getTask() == null) {
+                        unlink(x);
+                        taskIdMap.remove(task.getId());
+                    }
                 }
-            }
-        } else {
-            for (Node x = head; x != null; x = x.next) {
-                if (x.getTask().getId() == task.getId()) {
-                    unlink(x);
-                    taskIdMap.remove(task.getId());
-                }
+            } else {
+                for (Node x = head; x != null; x = x.next) {
+                    if (x.getTask().getId() == task.getId()) {
+                        unlink(x);
+                        taskIdMap.remove(task.getId());
+                    }
 
+                }
             }
+        } catch (NullPointerException e){
+            System.out.println(e.getMessage());
         }
     }
 

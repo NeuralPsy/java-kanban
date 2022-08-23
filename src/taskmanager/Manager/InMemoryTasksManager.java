@@ -1,5 +1,6 @@
 package taskmanager.Manager;
 
+import taskmanager.Manager.Exceptions.WrongTaskTypeException;
 import taskmanager.TaskTypes.*;
 
 import java.time.Duration;
@@ -29,13 +30,22 @@ public class InMemoryTasksManager implements TaskManager {
     public void addTaskToMap(Task task){
         String taskClass = task.getType().name();
 
-        switch (taskClass){
-            case "TASK" : tasksList.put(task.getId(), task);
-                break;
-            case "EPIC" :  epicsList.put(task.getId(), (Epic) task);
-                break;
-            case "SUBTASK" : subTasksList.put(task.getId(), (Subtask) task);
-                break;
+        try {
+            switch (taskClass) {
+                case "TASK":
+                    tasksList.put(task.getId(), task);
+                    break;
+                case "EPIC":
+                    epicsList.put(task.getId(), (Epic) task);
+                    break;
+                case "SUBTASK":
+                    subTasksList.put(task.getId(), (Subtask) task);
+                    break;
+                default:
+                    throw new WrongTaskTypeException("Wrong task type");
+            }
+        } catch (WrongTaskTypeException e){
+            System.out.println(e.getMessage());
         }
 
     }

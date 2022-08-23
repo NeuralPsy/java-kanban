@@ -14,8 +14,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     private static int newTaskId = 0;
     private Writer backedTasks;
 
-    private InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-
     public FileBackedTasksManager(){
 
     }
@@ -75,6 +73,22 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     }
 
+    private void parseString(Task task, String[] strings){
+        if (strings.length == 8){
+            task.setStatus(TaskStatus.valueOf(strings[3]));
+            LocalDateTime startTime = LocalDateTime.parse(strings[5], getFormatter());
+            Duration duration = Duration.parse(strings[6]);
+
+            setTime(task, startTime, duration);
+        }
+        if (strings.length == 9){
+            task.setStatus(TaskStatus.valueOf(strings[3]));
+            LocalDateTime startTime = LocalDateTime.parse(strings[5], getFormatter());
+            Duration duration = Duration.parse(strings[6]);
+            setTime(task, startTime, duration);
+        }
+    }
+
 
     public Task fromString(String stringTask){
         String[] taskArray = stringTask.split(",");
@@ -84,19 +98,12 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
         if (taskArray[1].equals("TASK")){
             task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            task.setStatus(TaskStatus.valueOf(taskArray[3]));
-            LocalDateTime startTime = LocalDateTime.parse(taskArray[5], getFormatter());
-            Duration duration = Duration.parse(taskArray[6]);
-
-            setTime(task, startTime, duration);
+            parseString(task, taskArray);
             addTaskToMap(task);
         }
         if (taskArray[1].equals("EPIC")){
             task = new Epic(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
-            task.setStatus(TaskStatus.valueOf(taskArray[3]));
-            LocalDateTime startTime = LocalDateTime.parse(taskArray[5], getFormatter());
-            Duration duration = Duration.parse(taskArray[6]);
-            setTime(task, startTime, duration);
+            parseString(task, taskArray);
 
             addTaskToMap(task);
         }
@@ -104,10 +111,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             task = new Subtask(taskArray[2], Integer.parseInt(taskArray[0]),
                     taskArray[4], Integer.parseInt(taskArray[8]));
 
-            task.setStatus(TaskStatus.valueOf(taskArray[3]));
-            LocalDateTime startTime = LocalDateTime.parse(taskArray[5], getFormatter());
-            Duration duration = Duration.parse(taskArray[6]);
-            setTime(task, startTime, duration);
+            parseString(task, taskArray);
 
             addTaskToMap(task);
         }

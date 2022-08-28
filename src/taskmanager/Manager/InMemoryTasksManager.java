@@ -1,5 +1,6 @@
 package taskmanager.Manager;
 
+import taskmanager.Manager.Exceptions.TasksIntersectionException;
 import taskmanager.Manager.Exceptions.WrongTaskTypeException;
 import taskmanager.TaskTypes.*;
 
@@ -227,8 +228,9 @@ public class InMemoryTasksManager implements TaskManager {
                         && time.getEndTime().isAfter(startDateTime));
 
         if (isInvalidTime) {
-            System.out.println("Это время уже занято другой задачей");
-            return;
+            throw new TasksIntersectionException("Это время уже занято другой задачей");
+//            System.out.println("Это время уже занято другой задачей");
+//            return;
         }
 
         task.setStartTime(startDateTime);

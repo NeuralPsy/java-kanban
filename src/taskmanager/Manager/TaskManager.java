@@ -1,5 +1,7 @@
 package taskmanager.Manager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.TreeSet;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
@@ -45,4 +47,6 @@ public interface TaskManager {
     TreeSet<Task> getPrioritizedTasks();
 
     public TreeSet<Task> getBusyTimeSchedule();
+
+    public void setTime(Task task, LocalDateTime startDateTime, Duration duration);
 }

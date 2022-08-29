@@ -1,9 +1,8 @@
 package taskmanager.Manager;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -13,11 +12,13 @@ import taskmanager.TaskTypes.Task;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
@@ -40,7 +41,8 @@ public class HttpTaskServer {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
             String method = httpExchange.getRequestMethod();
-            String path = httpExchange.getRequestURI().getPath();
+            URI uri = httpExchange.getRequestURI();
+            String path = uri.toString();
             String[] splitPath = path.split("/");
             String typeOfTask = splitPath[2];
 
@@ -51,6 +53,11 @@ public class HttpTaskServer {
 
             switch(method){
                 case "GET":
+                    if (typeOfTask.contains("id")){
+                        int taskId = Integer.parseInt(splitPath[2].split("=")[1]);
+                        getTaskAsJson(taskId, httpExchange);
+                        break;
+                    }
                     if (typeOfTask.equals("task")){
                         getTaskListAsJson(httpExchange);
                         break;
@@ -63,11 +70,10 @@ public class HttpTaskServer {
                         getEpicsListAsJson(httpExchange);
                         break;
                     }
-                    if (splitPath[3].contains("id")){
-                        int id = Integer.parseInt(splitPath[3].split("=")[1]);
-                        getTaskAsJson(id, httpExchange);
-                        break;
-                    }
+
+
+
+
                 case "POST":
                     if (typeOfTask.equals("task")){
                         getTaskFromJson(body, httpExchange);
@@ -80,26 +86,59 @@ public class HttpTaskServer {
 
         }
 
+    static class TaskAdapter extends TypeAdapter<Task> {
+
+        @Override
+        public void write(JsonWriter writer, Task task) throws IOException {
+            writer.beginObject();
+            writer.name("taskId");
+            writer.value(task.getId());
+            writer.name("taskName");
+            writer.value(task.getName());
+            writer.name("description");
+            writer.value(task.getDescription());
+            writer.name("startTime");
+            writer.value(task.getStartTime().toString());
+            writer.name("duration");
+            writer.value(task.getDuration().toString());
+            writer.name("endTime");
+            writer.value(task.getEndTime().toString());
+            writer.name("status");
+            writer.value(task.getStatus().toString());
+            writer.name("type");
+            writer.value(task.getType().toString());
+            writer.endObject();
+        }
+
+        @Override
+        public Task read(JsonReader reader) throws IOException {
+            Task task = new Task("Task", 1, "description");
+            return task;
+        }
+    }
+
 
     public static void getTaskAsJson(int taskId, HttpExchange httpExchange) throws IOException {
-        String response = gson.toJson(tasksManager.getTask(taskId));
-        System.out.println(response);
-
+        Task task = tasksManager.getTask(taskId);
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Task.class, new TaskAdapter());
+        builder.serializeNulls();
+        Gson gson = builder.create();
+        String json = gson.toJson(task);
         try (OutputStream os = httpExchange.getResponseBody()) {
-            os.write(response.getBytes());
-            httpExchange.sendResponseHeaders(201, 0);
-            return;
+            httpExchange.sendResponseHeaders(200, 0);
+            os.write(json.getBytes());
         }
     }
 
 
 
     public static void getTaskListAsJson(HttpExchange httpExchange) throws IOException {
+        List<Integer> tasksList = tasksManager.getTasksList();
 
         try (OutputStream os = httpExchange.getResponseBody()) {
             httpExchange.sendResponseHeaders(200, 0);
-            os.write(gson.toJson(tasksManager.getTasksList()).getBytes());
-            return;
+            os.write(gson.toJson(tasksList).getBytes());
         }
     }
 

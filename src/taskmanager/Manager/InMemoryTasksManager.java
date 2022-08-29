@@ -149,6 +149,13 @@ public class InMemoryTasksManager implements TaskManager {
         }
     }
 
+    public void removeEpic(int epicId){
+        epicsList.remove(epicId);
+        for (int id : subTasksList.keySet()){
+            if (subTasksList.get(id).getEpicIdOfSubtask() == epicId) subTasksList.remove(id);
+            }
+        }
+
     @Override
     public ArrayList<Integer> getEpicsList() {
         return new ArrayList<>(this.epicsList.keySet());
@@ -235,10 +242,12 @@ public class InMemoryTasksManager implements TaskManager {
         }
 
         task.setStartTime(startDateTime);
+
         if (task.getType() == TaskTypes.EPIC) {
             Duration duration1 = subTasksList.values()
                     .stream().map(subtask -> subtask.getDuration())
                     .reduce(Duration.ZERO, Duration::plus);
+
             task.setDuration(duration1);
             task.setEndTime(task.getStartTime().plusMinutes(duration1.toMinutes()));
             busyTimeSchedule.add(task);

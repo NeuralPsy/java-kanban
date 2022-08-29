@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HttpTaskServer {
@@ -62,12 +63,18 @@ public class HttpTaskServer {
                         getItemList(typeOfTask, httpExchange);
                     }
                     break;
-
                 case "POST":
                     getItemAsJson(typeOfTask, body, httpExchange);
                     break;
-
+                case "DELETE":
+                    if (typeOfTask.contains("id")) {
+                        int id = Integer.parseInt(splitPath[2].split("=")[1]);
+                        deleteItemById(typeOfTask, id, httpExchange);
                     }
+                    break;
+                default: httpExchange.sendResponseHeaders(404, 0);
+                    }
+
             }
 
         }
@@ -334,6 +341,33 @@ public class HttpTaskServer {
         if (typeOfTask.equals("task")) taskFromJson(body, httpExchange);
         if (typeOfTask.equals("subtask")) subtaskFromJson(body, httpExchange);
         if (typeOfTask.equals("epic")) epicFromJson(body, httpExchange);
+
+    }
+
+    public static void deleteItemById(String typeOfTask, int id, HttpExchange httpExchange) throws IOException {
+            if (typeOfTask.contains("task") && !typeOfTask.contains("sub")) {
+                tasksManager.removeTask(id);
+                try (OutputStream os = httpExchange.getResponseBody()) {
+                    httpExchange.sendResponseHeaders(201, 0);
+                    os.write("Task is deleted".getBytes());
+                }
+            }
+            else if (typeOfTask.contains("subtask")) {
+                tasksManager.removeSubTask(id);
+                try (OutputStream os = httpExchange.getResponseBody()) {
+                    httpExchange.sendResponseHeaders(201, 0);
+                    os.write("Subtask is deleted".getBytes());
+                }
+            }
+            else if (typeOfTask.contains("epic")) {
+                tasksManager.removeEpic(id);
+                try (OutputStream os = httpExchange.getResponseBody()) {
+                    httpExchange.sendResponseHeaders(201, 0);
+                    os.write("Epic is deleted".getBytes());
+                }
+            } else {
+                httpExchange.sendResponseHeaders(400, 0);
+            }
 
     }
 

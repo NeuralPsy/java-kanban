@@ -49,4 +49,6 @@ public interface TaskManager {
     public TreeSet<Task> getBusyTimeSchedule();
 
     public void setTime(Task task, LocalDateTime startDateTime, Duration duration);
+
+    public void removeEpic(int epicId);
 }

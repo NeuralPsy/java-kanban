@@ -1,4 +1,4 @@
-package taskmanager.Manager;
+package taskmanager.HttpServer;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
@@ -7,6 +7,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import taskmanager.Manager.Exceptions.TasksTimeIntersectionException;
+import taskmanager.Manager.Managers.Managers;
+import taskmanager.Manager.Managers.TaskManager;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
@@ -19,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HttpTaskServer {

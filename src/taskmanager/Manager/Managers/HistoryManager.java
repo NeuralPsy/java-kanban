@@ -1,4 +1,4 @@
-package taskmanager.Manager;
+package taskmanager.Manager.Managers;
 
 import taskmanager.TaskTypes.Task;
 

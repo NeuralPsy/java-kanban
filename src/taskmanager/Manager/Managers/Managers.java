@@ -1,6 +1,5 @@
-package taskmanager.Manager;
+package taskmanager.Manager.Managers;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Managers <T extends TaskManager> {

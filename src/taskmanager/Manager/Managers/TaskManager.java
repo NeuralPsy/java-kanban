@@ -1,4 +1,4 @@
-package taskmanager.Manager;
+package taskmanager.Manager.Managers;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

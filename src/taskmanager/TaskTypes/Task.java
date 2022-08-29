@@ -8,28 +8,6 @@ public class Task implements Comparable<Task> {
 
     protected String taskName;
     protected String description;
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setType(TaskTypes type) {
-        this.type = type;
-    }
-
-    public boolean isHasEpic() {
-        return hasEpic;
-    }
-
-    public void setHasEpic(boolean hasEpic) {
-        this.hasEpic = hasEpic;
-    }
-
     protected final int taskId;
     protected TaskStatus status;
     protected TaskTypes type = TaskTypes.TASK;
@@ -126,15 +104,15 @@ public class Task implements Comparable<Task> {
         this.status = status;
     }
 
-//    @Override
-//    public String toString(){
-//        return "Название задачи: " + taskName+"\n"
-//                +"ID задачи: " + taskId+"\n"
-//                +"Дата начала: " + startTime+"\n"
-//                +"Дата окончания: " + endTime+"\n"
-//                +"Статус задачи: " + status+"\n"
-//                +"Описание: " + description+"\n\n";
-//    }
+    @Override
+    public String toString(){
+        return "Название задачи: " + taskName+"\n"
+                +"ID задачи: " + taskId+"\n"
+                +"Дата начала: " + startTime+"\n"
+                +"Дата окончания: " + endTime+"\n"
+                +"Статус задачи: " + status+"\n"
+                +"Описание: " + description+"\n\n";
+    }
 
     @Override
     public boolean equals(Object o) {

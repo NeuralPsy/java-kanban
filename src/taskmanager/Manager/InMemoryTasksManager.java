@@ -1,6 +1,6 @@
 package taskmanager.Manager;
 
-import taskmanager.Manager.Exceptions.TasksIntersectionException;
+import taskmanager.Manager.Exceptions.TasksTimeIntersectionException;
 import taskmanager.Manager.Exceptions.WrongTaskTypeException;
 import taskmanager.TaskTypes.*;
 
@@ -223,14 +223,15 @@ public class InMemoryTasksManager implements TaskManager {
     }
 
     public void setTime(Task task, LocalDateTime startDateTime, Duration duration) {
-        boolean isInvalidTime = busyTimeSchedule.stream()
-                .anyMatch(time -> (time.getStartTime().isBefore(startDateTime) || time.getStartTime().equals(startDateTime))
-                        && time.getEndTime().isAfter(startDateTime));
+        boolean isInvalidTime = false;
+        if (task.getType() != TaskTypes.EPIC) {
+            isInvalidTime = busyTimeSchedule.stream()
+                    .anyMatch(time -> (time.getStartTime().isBefore(startDateTime) || time.getStartTime().equals(startDateTime))
+                            && time.getEndTime().isAfter(startDateTime));
+        }
 
         if (isInvalidTime) {
-            throw new TasksIntersectionException("Это время уже занято другой задачей");
-//            System.out.println("Это время уже занято другой задачей");
-//            return;
+            throw new TasksTimeIntersectionException("Это время уже занято другой задачей");
         }
 
         task.setStartTime(startDateTime);

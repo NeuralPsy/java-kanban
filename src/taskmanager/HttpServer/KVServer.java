@@ -28,10 +28,10 @@ public class KVServer {
 		server.createContext("/load", this::load);
 	}
 
-	public static void main(String[] args) throws IOException {
-		KVServer kvServer = new KVServer();
-		kvServer.start();
-	}
+//	public static void main(String[] args) throws IOException {
+//		KVServer kvServer = new KVServer();
+//		kvServer.start();
+//	}
 
 	private void load(HttpExchange h) throws IOException {
 		if (!hasAuth(h)){

@@ -28,14 +28,15 @@ public class HttpTaskServer {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private static Gson gson = new Gson();
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    HttpServer httpServer;
 
     private static TaskManager tasksManager;
 
 
 
-    public static void main(String[] args) throws IOException {
+    public HttpTaskServer() throws IOException {
         tasksManager = Managers.getDefault();
-        HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
         httpServer.createContext("/tasks", new TaskHandler());
         httpServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
@@ -370,9 +371,6 @@ public class HttpTaskServer {
                 httpExchange.sendResponseHeaders(400, 0);
             }
 
-    }
-
-    public HttpTaskServer() throws IOException{
     }
 
 }

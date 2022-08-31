@@ -136,7 +136,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     }
 
 
-    public void save() throws ManagerSaveException {
+    public void save() throws IOException, InterruptedException {
         try {
             backedTasks = new FileWriter(this.file);
             // id,type,name,status,description,epic + startTime, duration, endTime

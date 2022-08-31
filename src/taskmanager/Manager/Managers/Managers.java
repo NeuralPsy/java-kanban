@@ -5,8 +5,8 @@ import java.io.IOException;
 public class Managers <T extends TaskManager> {
 
 
-    public static TaskManager getDefault() throws IOException {
-        return new FileBackedTasksManager();
+    public static TaskManager getDefault(String url) throws IOException, InterruptedException {
+        return new HTTPTaskManager(url);
         }
 
     public InMemoryHistoryManager getDefaultHistory(){

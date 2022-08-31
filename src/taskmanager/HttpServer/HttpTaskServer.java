@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import taskmanager.Manager.Exceptions.TasksTimeIntersectionException;
+import taskmanager.Manager.Managers.FileBackedTasksManager;
 import taskmanager.Manager.Managers.Managers;
 import taskmanager.Manager.Managers.TaskManager;
 import taskmanager.TaskTypes.Epic;
@@ -35,7 +36,7 @@ public class HttpTaskServer {
 
 
     public HttpTaskServer() throws IOException {
-        tasksManager = Managers.getDefault();
+        tasksManager = new FileBackedTasksManager();
         httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
         httpServer.createContext("/tasks", new TaskHandler());
         httpServer.start();

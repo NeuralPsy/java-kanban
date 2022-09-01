@@ -1,5 +1,6 @@
 package taskmanager.HttpServer;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -11,14 +12,12 @@ import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-/**
- * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
- */
 public class KVServer {
 	public static final int PORT = 8078;
-	private final String apiToken;
+	private String apiToken;
 	private final HttpServer server;
 	private final Map<String, String> data = new HashMap<>();
+	Gson gson = new Gson();
 
 	public KVServer() throws IOException {
 		apiToken = generateApiToken();
@@ -28,10 +27,6 @@ public class KVServer {
 		server.createContext("/load", this::load);
 	}
 
-//	public static void main(String[] args) throws IOException {
-//		KVServer kvServer = new KVServer();
-//		kvServer.start();
-//	}
 
 	private void load(HttpExchange h) throws IOException {
 		if (!hasAuth(h)){
@@ -128,6 +123,10 @@ public class KVServer {
 		System.out.println("Открой в браузере http://localhost:" + PORT + "/");
 		System.out.println("API_TOKEN: " + apiToken);
 		server.start();
+	}
+
+	public void stop() {
+		server.stop(0);
 	}
 
 	private String generateApiToken() {

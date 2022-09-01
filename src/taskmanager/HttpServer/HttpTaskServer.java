@@ -43,6 +43,10 @@ public class HttpTaskServer {
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
 
+    public void stop(){
+        httpServer.stop(0);
+    }
+
     static class TaskHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {

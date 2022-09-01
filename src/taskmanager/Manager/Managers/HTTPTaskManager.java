@@ -1,20 +1,29 @@
 package taskmanager.Manager.Managers;
 
-import com.google.gson.Gson;
+import taskmanager.HttpServer.HttpTaskServer;
+import taskmanager.HttpServer.KVServer;
 import taskmanager.HttpServer.KVTaskClient;
-import taskmanager.Manager.Exceptions.ManagerSaveException;
 import taskmanager.TaskTypes.Task;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+
 public class HTTPTaskManager extends FileBackedTasksManager{
     KVTaskClient kvTaskClient;
+    HttpTaskServer httpTaskServer;
+    private static int key = 0;
+    KVServer kvServer;
 
-    public HTTPTaskManager(String url) throws IOException, InterruptedException {
-        kvTaskClient = new KVTaskClient(url);
+    public HTTPTaskManager() throws IOException, InterruptedException {
+        kvServer = new KVServer();
+        kvServer.start();
+        kvTaskClient = new KVTaskClient();
+        key++;
+    }
+
+    public void stopKV(){
+        kvServer.stop();
     }
 
     public String load(String key) throws NoSuchElementException, IOException, InterruptedException {
@@ -22,8 +31,7 @@ public class HTTPTaskManager extends FileBackedTasksManager{
 
     }
 
-    @Override
-    public void save() throws IOException, InterruptedException {
+    public void save(String key) throws IOException, InterruptedException {
         StringBuilder stringToSave = new StringBuilder();
         // id,type,name,status,description,epic + startTime, duration, endTime
 
@@ -43,7 +51,39 @@ public class HTTPTaskManager extends FileBackedTasksManager{
         stringToSave.append("HISTORY ");
         stringToSave.append(getHistory());
 
-        kvTaskClient.put(String.valueOf(1), stringToSave.toString());
+        kvTaskClient.put(key, stringToSave.toString());
     }
 
+    public HTTPTaskManager(String backedTasks) throws NoSuchElementException, IOException, InterruptedException {
+        new KVServer().start();
+        kvTaskClient = new KVTaskClient();
+        //httpTaskServer = new HttpTaskServer();
+        key++;
+        String[] backedTasksSplit = backedTasks.split("\n");
+        loadHistory(backedTasksSplit);
+        }
+
+
+
+    public void loadHistory(String[] backedTasks) {
+
+        for (String t : backedTasks) {
+            if (t.contains("HISTORY")) {
+                String[] arrayToSplit = t.split(" ");
+                try {
+                    String stringHistory = arrayToSplit[1];
+                    for (String x : stringHistory.split(",")) {
+                        addToHistory(Integer.parseInt(x));
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    break;
+                }
+                break;
+            }
+            Task task = fromString(t);
+            addTaskToMap(task);
+        }
+    }
 }
+
+

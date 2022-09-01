@@ -32,7 +32,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         }
     }
 
-    private void loadHistory(Scanner reader) {
+    public void loadHistory(Scanner reader) {
 
         while (reader.hasNextLine()){
             String line = reader.nextLine();

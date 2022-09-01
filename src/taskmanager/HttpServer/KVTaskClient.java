@@ -18,17 +18,20 @@ public class KVTaskClient {
     private final String apiToken;
     Gson gson = new Gson();
 
-    public KVTaskClient(String url) throws IOException, InterruptedException {
+    public KVTaskClient() throws IOException, InterruptedException {
         httpClient = HttpClient.newHttpClient();
-        this.url = URI.create(url);
-        URI urlRegister = URI.create(url+"/register");
+        this.url = URI.create("http://localhost:8078/");
+        URI urlRegister = URI.create(url+"register");
         HttpRequest request = HttpRequest.newBuilder().uri(urlRegister).GET().build();
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        apiToken = response.toString();
+        apiToken = response.body();
     }
 
+
+
+
     public void put(String key, String json) throws IOException, InterruptedException {
-        URI urlPut = URI.create(this.url+this.urlPut+key+"?"+"API_TOKEN="+apiToken);
+        URI urlPut = URI.create(this.url+this.urlPut+key+"?API_TOKEN="+apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(urlPut)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -38,7 +41,7 @@ public class KVTaskClient {
     }
 
     public String load(String key) throws IOException, InterruptedException {
-        URI urlLoad = URI.create(this.url+this.urlLoad+key+"?"+"API_TOKEN="+apiToken);
+        URI urlLoad = URI.create(this.url+this.urlLoad+key+"?API_TOKEN="+apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(urlLoad)
                 .GET()

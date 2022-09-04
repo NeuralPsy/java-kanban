@@ -104,7 +104,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
 
 
     @Test
-    void shouldSaveToFileWhenNoTasksAreAdded() throws IOException {
+    void shouldSaveToFileWhenNoTasksAreAdded() throws IOException, InterruptedException {
         taskManager.save();
         Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
         String fileAsString = Files.readString(path);
@@ -112,7 +112,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     }
 
     @Test
-    void shouldSaveToFileWhenSomeTasksAreAdded() throws IOException {
+    void shouldSaveToFileWhenSomeTasksAreAdded() throws IOException, InterruptedException {
         Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
         String fileAsString = Files.readString(path);
         assertEquals("HISTORY ", fileAsString, "Пустой файл сохранен неверно");
@@ -162,7 +162,7 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     }
 
     @Test
-    void shouldLoadFromFile() throws IOException {
+    void shouldLoadFromFile() throws IOException, InterruptedException {
         File existingFile = new File("src/test/java/testingFiles/TestFileBackedTasksManager.csv");
        FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(existingFile);
         Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");

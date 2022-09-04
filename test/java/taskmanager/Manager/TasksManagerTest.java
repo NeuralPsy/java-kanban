@@ -9,17 +9,18 @@ import taskmanager.TaskTypes.Subtask;
 import taskmanager.TaskTypes.Task;
 import taskmanager.TaskTypes.TaskStatus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class TasksManagerTest<T extends TaskManager> {
+public abstract class TasksManagerTest<T extends TaskManager> {
     protected T taskManager;
 
-    abstract public T createTaskManager();
+    abstract public T createTaskManager() throws IOException, InterruptedException;
 
     @BeforeEach
-    void setTaskManager() {
+    void setTaskManager() throws IOException, InterruptedException {
         taskManager = createTaskManager();
     }
 

@@ -12,9 +12,9 @@ public class Task implements Comparable<Task> {
     protected TaskStatus status;
     protected TaskTypes type = TaskTypes.TASK;
     protected boolean hasEpic = false;
-    protected Duration duration;
-    protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
+    protected Duration duration = null;
+    protected LocalDateTime startTime = null;
+    protected LocalDateTime endTime = null;
 
     public void setDuration(Duration duration) {
         this.duration = duration;
@@ -82,9 +82,6 @@ public class Task implements Comparable<Task> {
         this.status = TaskStatus.NEW;
         this.taskId = taskId;
         this.description = description;
-        startTime = LocalDateTime.now();
-        duration = Duration.ofMillis(100);
-        endTime = startTime.plus(duration);
 
     }
 

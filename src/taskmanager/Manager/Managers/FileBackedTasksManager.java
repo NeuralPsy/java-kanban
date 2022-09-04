@@ -55,20 +55,25 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
     public String convertTaskToString(Task task) {
         String taskType = task.getType().name();
+        String taskString = null;
 
         // id,type,name,status,description,+ startTime,duration,endTime,epic
 
-        String taskString = task.getId()+","+
-                    taskType+","+
-                    task.getName()+","+
-                    task.getStatusAsString()+","+
-                    task.getDescription()+","+task.getStartTime().format(getFormatter()) +","+
-                    task.getDuration()+","+task.getEndTime().format(getFormatter())+",";
+        try {
+           taskString = task.getId() + "," +
+                    taskType + "," +
+                    task.getName() + "," +
+                    task.getStatusAsString() + "," +
+                    task.getDescription() + "," + task.getStartTime().format(getFormatter()) + "," +
+                    task.getDuration() + "," + task.getEndTime().format(getFormatter()) + ",";
 
 
-            if (taskType.equals("SUBTASK")){
+            if (taskType.equals("SUBTASK")) {
                 taskString += ((Subtask) task).getEpicId();
             }
+        } catch (NullPointerException e){
+
+        }
             return taskString;
 
     }

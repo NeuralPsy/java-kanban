@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 
 public class HTTPTaskManager extends FileBackedTasksManager{
     KVTaskClient kvTaskClient;
-    HttpTaskServer httpTaskServer;
     private static int key = 0;
     KVServer kvServer;
 
@@ -65,7 +64,7 @@ public class HTTPTaskManager extends FileBackedTasksManager{
 
 
 
-    public void loadHistory(String[] backedTasks) {
+    private void loadHistory(String[] backedTasks) {
 
         for (String t : backedTasks) {
             if (t.contains("HISTORY")) {

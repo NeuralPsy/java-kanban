@@ -2,6 +2,7 @@ package taskmanager.Manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import taskmanager.Manager.Exceptions.EpicDoesNotExistWhenAddingSubtaskException;
 import taskmanager.Manager.Managers.InMemoryHistoryManager;
 import taskmanager.Manager.Managers.TaskManager;
 import taskmanager.TaskTypes.Epic;
@@ -173,7 +174,7 @@ public abstract class TasksManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void shouldGetTask() {
+    void shouldGetTask() throws EpicDoesNotExistWhenAddingSubtaskException {
         Task task = new Task("Задача без названия", 0, "Это задача для проверки метода, " +
                 "возвращающего таск по его id");
         Epic epic = new Epic("Эпик без названия", 1, "Это эпик для проверки метода, " +

@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import taskmanager.Manager.Exceptions.EpicDoesNotExistWhenAddingSubtaskException;
 import taskmanager.Manager.Exceptions.TasksTimeIntersectionException;
 import taskmanager.Manager.Managers.FileBackedTasksManager;
 import taskmanager.Manager.Managers.Managers;
@@ -32,8 +33,6 @@ public class HttpTaskServer {
     HttpServer httpServer;
 
     private static TaskManager tasksManager;
-
-
 
     public HttpTaskServer() throws IOException {
         tasksManager = new FileBackedTasksManager();
@@ -304,6 +303,12 @@ public class HttpTaskServer {
                 httpExchange.sendResponseHeaders(400, 0);
                 os.write(e.getMessage().getBytes());
             }
+        } catch (EpicDoesNotExistWhenAddingSubtaskException e) {
+            try (OutputStream os = httpExchange.getResponseBody()) {
+                String msg = "There's no epic to add subtask";
+                httpExchange.sendResponseHeaders(400, 0);
+                os.write(msg.getBytes());
+            }
         }
 
     }
@@ -320,7 +325,7 @@ public class HttpTaskServer {
         try {
             try (OutputStream os = httpExchange.getResponseBody()) {
                 httpExchange.sendResponseHeaders(201, 0);
-                os.write("Epic is created".getBytes());
+                os.write(("Epic is created with id "+epicId).getBytes());
             }
         } catch (TasksTimeIntersectionException e){
             try (OutputStream os = httpExchange.getResponseBody()) {

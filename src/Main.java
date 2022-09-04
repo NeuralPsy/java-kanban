@@ -49,5 +49,7 @@ public class Main {
         String l2 = newTM.load("tm2");
         System.out.println(l2);
 
+        httpTaskServer.stop();
+
     }
 }

@@ -32,7 +32,7 @@ public class HttpTaskServer {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     HttpServer httpServer;
 
-    private static TaskManager tasksManager;
+    private static TaskManager tasksManager; //К сожалению, я не могу убрать эту строку, иначе код перестанет работать
 
     public HttpTaskServer() throws IOException {
         tasksManager = new FileBackedTasksManager();

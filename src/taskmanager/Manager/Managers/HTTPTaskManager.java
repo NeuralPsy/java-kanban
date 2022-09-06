@@ -56,7 +56,6 @@ public class HTTPTaskManager extends FileBackedTasksManager{
     public HTTPTaskManager(String backedTasks) throws NoSuchElementException, IOException, InterruptedException {
         new KVServer().start();
         kvTaskClient = new KVTaskClient();
-        //httpTaskServer = new HttpTaskServer();
         key++;
         String[] backedTasksSplit = backedTasks.split("\n");
         loadHistory(backedTasksSplit);

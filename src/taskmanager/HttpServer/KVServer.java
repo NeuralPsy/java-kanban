@@ -94,7 +94,7 @@ public class KVServer {
 					String response = "/save ждёт POST-запрос, а получил: " + h.getRequestMethod();
 					h.sendResponseHeaders(405, 0);
 					os.write(response.getBytes());
-				} return;
+				}
 			}
 		} finally {
 			h.close();

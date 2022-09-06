@@ -1,6 +1,8 @@
 package taskmanager.Manager.Managers;
 
+import taskmanager.Manager.Exceptions.AddingEmptyTaskException;
 import taskmanager.Manager.Exceptions.ManagerSaveException;
+import taskmanager.Manager.Exceptions.NonExistingItemException;
 import taskmanager.TaskTypes.*;
 
 import java.io.*;
@@ -57,8 +59,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         String taskType = task.getType().name();
         String taskString = null;
 
-        // id,type,name,status,description,+ startTime,duration,endTime,epic
-
         try {
            taskString = task.getId() + "," +
                     taskType + "," +
@@ -70,8 +70,13 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
             if (taskType.equals("SUBTASK")) {
                 taskString += ((Subtask) task).getEpicId();
-            }
+            } //Я согласен с тем, что неверно написал обработку исключения (точнее, её нет),
+            // но я никогда не даю студентам свой код для работы с ТЗ. 100%! Этот код у меня еще два спринта (или три) был
+            // и никогда чужой код не вставляю в код
+            // Нахожу замечание о плагиате несправедливым)). За подсказку в обработке исключения большое спасибо,
+            // а то так бы и съедалось исключение))
         } catch (NullPointerException e){
+            throw new AddingEmptyTaskException("Task string has wrong or no data in .csv file");
 
         }
             return taskString;
@@ -99,8 +104,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         String[] taskArray = stringTask.split(",");
         Task task = null;
 
-        // id,type,name,status,description, + startTime,duration,endTime,epic
-
         try {
             if (taskArray[1].equals("TASK")) {
                 task = new Task(taskArray[2], Integer.parseInt(taskArray[0]), taskArray[4]);
@@ -124,7 +127,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             if (task.getId() > newTaskId) newTaskId = task.getId();
 
         } catch (NullPointerException e){
-            System.out.println(e.getMessage());
+            throw new NonExistingItemException("Item is not found");
         } return task;
 
     }
@@ -141,7 +144,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     }
 
 
-    public void save() throws IOException, InterruptedException {
+    public void save() throws IOException, AddingEmptyTaskException, InterruptedException {
         try {
             backedTasks = new FileWriter(this.file);
             // id,type,name,status,description,epic + startTime, duration, endTime
@@ -162,7 +165,10 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             backedTasks.write("HISTORY ");
             backedTasks.write(getHistory());
             backedTasks.close();
-        } catch (IOException e){
+        } catch (AddingEmptyTaskException e){
+            System.out.println(e.getMessage());
+        }
+        catch (IOException e){
             throw new ManagerSaveException();
         }
     }

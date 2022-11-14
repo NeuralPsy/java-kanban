@@ -178,7 +178,7 @@ public class InMemoryTasksManager implements TaskManager {
         } return taskToReturn;
     }
 
-    public Task recoverTask(int newTaskId){ // Возвращает задачу по ID, но не передает сведения о просмотре в историю
+    public Task recoverTask(int newTaskId){
         Task taskToReturn = null;
         if (tasksList.containsKey(newTaskId)) {
             taskToReturn = tasksList.get(newTaskId);

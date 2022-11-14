@@ -1,6 +1,5 @@
 package taskmanager.Manager.Managers;
 
-import taskmanager.HttpServer.HttpTaskServer;
 import taskmanager.HttpServer.KVServer;
 import taskmanager.HttpServer.KVTaskClient;
 import taskmanager.TaskTypes.Task;

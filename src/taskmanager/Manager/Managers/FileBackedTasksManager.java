@@ -60,7 +60,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         String taskString = null;
 
         try {
-           taskString = task.getId() + "," +
+            taskString = task.getId() + "," +
                     taskType + "," +
                     task.getName() + "," +
                     task.getStatusAsString() + "," +
@@ -70,11 +70,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
 
             if (taskType.equals("SUBTASK")) {
                 taskString += ((Subtask) task).getEpicId();
-            } //Я согласен с тем, что неверно написал обработку исключения (точнее, её нет),
-            // но я никогда не даю студентам свой код для работы с ТЗ. 100%! Этот код у меня еще два спринта (или три) был
-            // и никогда чужой код не вставляю в код
-            // Нахожу замечание о плагиате несправедливым)). За подсказку в обработке исключения большое спасибо,
-            // а то так бы и съедалось исключение))
+            }
         } catch (NullPointerException e){
             throw new AddingEmptyTaskException("Task string has wrong or no data in .csv file");
 
@@ -82,6 +78,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
             return taskString;
 
     }
+
 
     private void parseString(Task task, String[] strings){
         if (strings.length == 8){
@@ -147,7 +144,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     public void save() throws IOException, AddingEmptyTaskException, InterruptedException {
         try {
             backedTasks = new FileWriter(this.file);
-            // id,type,name,status,description,epic + startTime, duration, endTime
 
             for (int taskId : getTasksList()) {
                 Task task = recoverTask(taskId);

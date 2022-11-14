@@ -23,7 +23,6 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     @Test
     void shouldConvertTaskToString() {
         int taskId = taskManager.addTask("Задача", "Без описания");
-        // id,type,name,status,description, + startTime,duration,endTime,epic
         LocalDateTime dateTime = LocalDateTime.now();
         Duration duration = Duration.ofDays(1);
         taskManager.setTime(taskManager.getTask(taskId),dateTime, duration);
@@ -161,19 +160,6 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
 
     }
 
-    @Test
-    void shouldLoadFromFile() throws IOException, InterruptedException {
-        File existingFile = new File("src/test/java/testingFiles/TestFileBackedTasksManager.csv");
-       FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(existingFile);
-        Path path = Path.of("src/taskmanager/Manager/BackedData/DefaultFileBackedTasksManager.csv");
-        String fileAsString1 = Files.readString(path);
-
-        managerFromFile.save();
-
-        String fileAsString2 = Files.readString(path);
-        assertEquals(fileAsString1, fileAsString2);
-
-    }
     @Override
     void shouldGetSubTasksList() {
         int epic1Id = taskManager.addEpic("Эпик №1", "Это эпик для проверки метода, " +
@@ -194,8 +180,6 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
         assertArrayEquals(expectedSubtasksList, realSubtasksList);
 
     }
-
-
 
 
 

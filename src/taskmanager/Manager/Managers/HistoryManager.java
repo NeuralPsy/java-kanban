@@ -2,7 +2,6 @@ package taskmanager.Manager.Managers;
 
 import taskmanager.TaskTypes.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface HistoryManager {

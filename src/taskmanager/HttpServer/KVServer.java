@@ -31,7 +31,7 @@ public class KVServer {
 	private void load(HttpExchange h) throws IOException {
 		if (!hasAuth(h)){
 			try (OutputStream os = h.getResponseBody()){
-				String response = "Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа";
+				String response = "Unauthorized request, parameter is needed in query API_TOKEN";
 				h.sendResponseHeaders(403, 0);
 				os.write(response.getBytes());
 
@@ -40,7 +40,7 @@ public class KVServer {
 		if ("GET".equals(h.getRequestMethod())){
 			String key = h.getRequestURI().getPath().substring("/load/".length());
 			if (!data.containsKey(key)) {
-				System.out.println("Указанный кey не зарегистрирован");
+				System.out.println("Kкey is not registered");
 				h.sendResponseHeaders(400, 0);
 				return;
 			}
@@ -53,7 +53,7 @@ public class KVServer {
 			System.out.println("\n/save");
 			if (!hasAuth(h)) {
 				try (OutputStream os = h.getResponseBody()){
-					String response = "Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа";
+					String response = "Unauthorized request, parameter is needed in query API_TOKEN";
 					h.sendResponseHeaders(403, 0);
 					os.write(response.getBytes());
 
@@ -64,7 +64,7 @@ public class KVServer {
 				String key = h.getRequestURI().getPath().substring("/save/".length());
 				if (key.isEmpty()) {
 					try (OutputStream os = h.getResponseBody()){
-						String response = "Key для сохранения пустой. key указывается в пути: /save/{key}";
+						String response = "Key is empty. key should be given in path: /save/{key}";
 						h.sendResponseHeaders(400, 0);
 						os.write(response.getBytes());
 
@@ -73,7 +73,7 @@ public class KVServer {
 				String value = readText(h);
 				if (value.isEmpty()) {
 					try (OutputStream os = h.getResponseBody()){
-						String response = "\"Value для сохранения пустой. value указывается в теле запроса\" " +
+						String response = "\"Value is empty. value should bi given in request-body\" " +
 								 h.getRequestMethod();
 						h.sendResponseHeaders(405, 0);
 						os.write(response.getBytes());
@@ -82,7 +82,7 @@ public class KVServer {
 				}
 				data.put(key, value);
 				try (OutputStream os = h.getResponseBody()){
-					String response = "Значение для ключа " + key + " успешно обновлено!";
+					String response = "Key value " + key + " is successfully updated!";
 					h.sendResponseHeaders(200, 0);
 					os.write(response.getBytes());
 				}
@@ -91,7 +91,7 @@ public class KVServer {
 
 			} else {
 				try (OutputStream os = h.getResponseBody()){
-					String response = "/save ждёт POST-запрос, а получил: " + h.getRequestMethod();
+					String response = "/save POST-request was expected, but: " + h.getRequestMethod() +" is received";
 					h.sendResponseHeaders(405, 0);
 					os.write(response.getBytes());
 				}
@@ -108,7 +108,7 @@ public class KVServer {
 				sendText(h, apiToken);
 			} else {
 				try (OutputStream os = h.getResponseBody()){
-					String response = "/register ждёт GET-запрос, а получил " + h.getRequestMethod();
+					String response = "/register GET-request expected, but " + h.getRequestMethod() +" was received";
 					h.sendResponseHeaders(405, 0);
 					os.write(response.getBytes());
 				}
@@ -119,8 +119,8 @@ public class KVServer {
 	}
 
 	public void start() {
-		System.out.println("Запускаем сервер на порту " + PORT);
-		System.out.println("Открой в браузере http://localhost:" + PORT + "/");
+		System.out.println("Star server at port " + PORT);
+		System.out.println("Open the link in browser http://localhost:" + PORT + "/");
 		System.out.println("API_TOKEN: " + apiToken);
 		server.start();
 	}

@@ -9,7 +9,6 @@ import com.sun.net.httpserver.HttpServer;
 import taskmanager.Manager.Exceptions.EpicDoesNotExistWhenAddingSubtaskException;
 import taskmanager.Manager.Exceptions.TasksTimeIntersectionException;
 import taskmanager.Manager.Managers.FileBackedTasksManager;
-import taskmanager.Manager.Managers.Managers;
 import taskmanager.Manager.Managers.TaskManager;
 import taskmanager.TaskTypes.Epic;
 import taskmanager.TaskTypes.Subtask;
@@ -32,7 +31,7 @@ public class HttpTaskServer {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     HttpServer httpServer;
 
-    private static TaskManager tasksManager; //К сожалению, я не могу убрать эту строку, иначе код перестанет работать
+    private static TaskManager tasksManager;
 
     public HttpTaskServer() throws IOException {
         tasksManager = new FileBackedTasksManager();
@@ -110,7 +109,7 @@ public class HttpTaskServer {
         }
 
         @Override
-        public Task read(JsonReader reader) throws IOException {
+        public Task read(JsonReader reader) {
             Task task = new Task("Task", 1, "description");
             return task;
         }
@@ -146,7 +145,7 @@ public class HttpTaskServer {
 
 
         @Override
-        public Subtask read(JsonReader reader) throws IOException {
+        public Subtask read(JsonReader reader) {
             Subtask subtask = new Subtask("Subtask", 3, "description", 2);
             return subtask;
         }
@@ -180,7 +179,7 @@ public class HttpTaskServer {
 
 
         @Override
-        public Epic read(JsonReader reader) throws IOException {
+        public Epic read(JsonReader reader) {
             Epic epic = new Epic("Epic", 3, "description");
             return epic;
         }
